@@ -1,0 +1,16 @@
+Old URL,Old Page Title,Old Content Type,New URL,New Content Type,Migration Action,Priority,Notes
+/,AOFA – Association of Former Ambassadors,Homepage,/,Homepage,MIGRATE,CRITICAL,Full redesign; preserve organization info and statistics
+/executive-committee/,Executive Committee 2024-2025,People/Committee,/about/leadership/,Leadership Page,MIGRATE,HIGH,Show historical EC terms; 2024-2025 term details
+/aofa-executive-committee-2026-2027/,AOFA Executive Committee 2026-2027,People/Committee,/about/leadership/,Leadership Page,MIGRATE,CRITICAL,Current (2026-2027) EC - make primary leadership page
+/members-list/,Members List,People Directory,/members/,Members Directory,MIGRATE,HIGH,92 regular + 14 honorary members with contact info
+/constitution/,Constitution – AOFA,Document,/about/constitution/,Document Page,MIGRATE,HIGH,Constitution scanned as 10 JPG pages; consider OCR + text conversion
+/notice/,Notice – AOFA,Notice Archive,/notices/,News/Notice Archive,MIGRATE,HIGH,11 notices identified; migrate each to CMS posts
+/article/,Articles – AOFA,Article Archive,/articles/,Publication Archive,MIGRATE,HIGH,7 articles by member ambassadors; migrate to CMS posts
+/books/,Books – AOFA,Book Reviews,/publications/books/,Publications,MIGRATE,MEDIUM,6 book reviews; migrate to CMS
+/events-news/,Events News – AOFA,Events/News,/events/,Events Archive,REVIEW,MEDIUM,Page content not recovered; create new events section
+/aofa-voters-list-2025/,AOFA Voters List 2025,Historical Document,/archive/voters-list-2025/,Archive Page,ARCHIVE,LOW,Historical election document; archive in members section
+/aofa-voters-list-2023/,AOFA Voters List 2023,Historical Document,/archive/voters-list-2023/,Archive Page,ARCHIVE,LOW,Historical election document
+/aofa-ec-elections-2025/,AOFA EC Elections 2025,Event/Document,/archive/elections-2025/,Archive Page,ARCHIVE,LOW,Historical election page; archive in about section
+/messages/,Messages – AOFA,Communications,/about/messages/,Messages Page,MIGRATE,LOW,3 messages recorded; migrate content
+/wp-content/uploads/2022/12/1.jpg (x10),Constitution Document Pages,Scanned Images,/about/constitution/,Document Page (embedded),MIGRATE,HIGH,10 scanned pages of constitution; embed in constitution page
+https://aofabd.com/ (all URLs),Entire Site,All Content Types,N/A,N/A,REDIRECT,CRITICAL,Set up 301 redirects from old URLs to new URL structure

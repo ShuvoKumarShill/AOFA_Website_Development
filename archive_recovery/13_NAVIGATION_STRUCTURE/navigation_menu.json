@@ -1,0 +1,96 @@
+{
+  "organization": {
+    "full_name": "Association of Former Ambassadors",
+    "short_name": "AOFA",
+    "domain": "aofabd.com",
+    "alternate_domain": "aofa.org.bd",
+    "country": "Bangladesh",
+    "cms": "WordPress",
+    "language": ["English", "Bengali"],
+    "source_url": "https://web.archive.org/web/20260210053148/https://aofabd.com/",
+    "capture_date": "2026-02-10T05:31:48Z",
+    "extraction_date": "2026-09-06"
+  },
+  "navigation_menu": [
+    {
+      "item": "Home",
+      "url": "https://aofabd.com/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "Executive Committee, 2024-2025",
+      "url": "https://aofabd.com/executive-committee/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "Members' List",
+      "url": "https://aofabd.com/members-list/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "Constitution",
+      "url": "https://aofabd.com/constitution/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "Notice",
+      "url": "https://aofabd.com/notice/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "Articles",
+      "url": "https://aofabd.com/article/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "Books",
+      "url": "https://aofabd.com/books/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "Events News",
+      "url": "https://aofabd.com/events-news/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "AOFA Voters' List 2023",
+      "url": "https://aofabd.com/aofa-voters-list-2023/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "Messages",
+      "url": "https://aofabd.com/messages/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "AOFA VOTERS' LIST 2025",
+      "url": "https://aofabd.com/aofa-voters-list-2025/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "AOFA EC ELECTIONS 2025",
+      "url": "https://aofabd.com/aofa-ec-elections-2025/",
+      "level": 1,
+      "submenu": []
+    },
+    {
+      "item": "AOFA EXECUTIVE COMMITTEE, 2026-2027",
+      "url": "https://aofabd.com/aofa-executive-committee-2026-2027/",
+      "level": 1,
+      "submenu": []
+    }
+  ],
+  "notes": "Navigation extracted from Constitution page sidebar/menu. May not reflect ALL menu items from homepage. Additional menu items may exist.",
+  "source_url": "https://web.archive.org/web/20260308045759/https://aofabd.com/constitution/"
+}

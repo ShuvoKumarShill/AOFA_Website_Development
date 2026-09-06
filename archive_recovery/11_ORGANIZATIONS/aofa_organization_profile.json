@@ -1,0 +1,38 @@
+{
+  "organization": {
+    "id": "AOFABD-ORG-001",
+    "full_name": "Association of Former Ambassadors",
+    "short_name": "AOFA",
+    "country": "Bangladesh",
+    "type": "Professional Association / Alumni Organization",
+    "description": "AOFA is the Association of Former BCS(FA) Ambassadors of Bangladesh. It brings together retired ambassadors and former foreign service officers who served Bangladesh in diplomatic missions abroad.",
+    "website_primary": "https://aofabd.com",
+    "website_alternate": "https://aofa.org.bd",
+    "cms": "WordPress",
+    "languages": ["English", "Bengali"],
+    "founding_info": "UNKNOWN - to be recovered from About page"
+  },
+  "contact": {
+    "email": "UNKNOWN - to be extracted from homepage/contact page",
+    "phone": "UNKNOWN - to be extracted from homepage/contact page",
+    "address": "UNKNOWN - to be extracted from homepage/contact page",
+    "social_media": {
+      "facebook": "UNKNOWN",
+      "twitter": "UNKNOWN",
+      "youtube": "UNKNOWN",
+      "linkedin": "UNKNOWN"
+    }
+  },
+  "key_facts": {
+    "total_voters_2025": 73,
+    "ec_election_venue_2025": "Foreign Service Academy, Baily Road, Dhaka",
+    "ec_election_date_2025": "25 December 2025",
+    "constitution_amended": "2022-12-12 (EGM approved amendments)",
+    "constitution_approved_by": "Amb. Roknul Haq"
+  },
+  "source": {
+    "primary_snapshot": "https://web.archive.org/web/20260210053148/https://aofabd.com/",
+    "capture_date": "2026-02-10",
+    "extraction_date": "2026-09-06"
+  }
+}
