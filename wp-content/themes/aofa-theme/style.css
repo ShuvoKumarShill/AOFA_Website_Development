@@ -12,3 +12,412 @@
  * Requires PHP: 8.2
  * Spec Item: 001-initial-setup
  */
+
+/* ==========================================================================
+   AOFA THEME — Global Stylesheet
+   WCAG 2.2 AA compliant. Mobile-first. No utility-class framework.
+   All layout tokens come from theme.json via CSS custom properties.
+   ========================================================================== */
+
+/* ── 1. Reset & Base ──────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	scroll-behavior: smooth;
+}
+
+body {
+	min-height: 100vh;
+	line-height: 1.7;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* ── 2. Skip to Content (Accessibility — WCAG 2.4.1) ─────────────────────── */
+
+.skip-to-content {
+	position: absolute;
+	top: -100%;
+	left: 1rem;
+	z-index: 9999;
+	padding: 0.75rem 1.5rem;
+	background: var(--wp--preset--color--aofa-accent);
+	color: var(--wp--preset--color--aofa-text);
+	font-weight: 700;
+	font-size: var(--wp--preset--font-size--sm);
+	border-radius: 0 0 6px 6px;
+	text-decoration: none;
+	transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+	top: 0;
+	outline: 3px solid var(--wp--preset--color--aofa-primary);
+	outline-offset: 2px;
+}
+
+/* ── 3. Focus Styles (WCAG 2.4.7) ────────────────────────────────────────── */
+
+:focus-visible {
+	outline: 3px solid var(--wp--preset--color--aofa-accent);
+	outline-offset: 3px;
+	border-radius: 2px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+	outline: 3px solid var(--wp--preset--color--aofa-accent);
+	outline-offset: 3px;
+}
+
+/* ── 4. Typography ────────────────────────────────────────────────────────── */
+
+p {
+	max-width: 72ch; /* Optimal reading width */
+}
+
+a {
+	color: var(--wp--preset--color--aofa-primary-light);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	transition: color 0.15s ease;
+}
+
+a:hover {
+	color: var(--wp--preset--color--aofa-accent);
+}
+
+/* Minimum contrast ratio 4.5:1 for normal text (WCAG 1.4.3) */
+.has-aofa-text-muted-color {
+	color: var(--wp--preset--color--aofa-text-muted);
+}
+
+blockquote {
+	border-left: 4px solid var(--wp--preset--color--aofa-accent);
+	padding-left: var(--wp--preset--spacing--50);
+	font-style: italic;
+	color: var(--wp--preset--color--aofa-text-muted);
+}
+
+/* ── 5. Header ────────────────────────────────────────────────────────────── */
+
+.aofa-site-header {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile nav toggle area */
+.wp-block-navigation__responsive-container.is-menu-open {
+	background: var(--wp--preset--color--aofa-primary) !important;
+}
+
+.wp-block-navigation-item__content {
+	letter-spacing: 0.02em;
+	padding: 0.4rem 0.6rem;
+	border-radius: 4px;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.wp-block-navigation-item__content:hover {
+	background: rgba(255, 255, 255, 0.12);
+}
+
+/* ── 6. Cards ─────────────────────────────────────────────────────────────── */
+
+.aofa-card {
+	transition: box-shadow 0.2s ease, transform 0.2s ease;
+	border: 1px solid var(--wp--preset--color--aofa-border);
+	height: 100%;
+}
+
+.aofa-card:hover {
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+	transform: translateY(-2px);
+}
+
+/* ── 7. Buttons ───────────────────────────────────────────────────────────── */
+
+.wp-block-button__link {
+	transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+	text-decoration: none;
+	letter-spacing: 0.03em;
+}
+
+.wp-block-button__link:hover {
+	transform: translateY(-1px);
+}
+
+.wp-block-button__link:active {
+	transform: translateY(0);
+}
+
+/* Minimum touch target 44×44px (WCAG 2.5.5) */
+.wp-block-button__link {
+	min-height: 44px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* ── 8. Main Content ──────────────────────────────────────────────────────── */
+
+.aofa-main-home,
+.aofa-main-archive,
+.aofa-main-single,
+.aofa-main-page {
+	min-height: 50vh;
+}
+
+/* Section headings in main areas */
+.aofa-main-home h2,
+.aofa-main-archive h2 {
+	position: relative;
+	padding-bottom: var(--wp--preset--spacing--30);
+}
+
+.aofa-main-home h2::after,
+.aofa-main-archive h2::after {
+	content: '';
+	display: block;
+	width: 48px;
+	height: 3px;
+	background: var(--wp--preset--color--aofa-accent);
+	border-radius: 2px;
+	margin-top: 0.5rem;
+}
+
+/* ── 9. Member Grid ───────────────────────────────────────────────────────── */
+
+.aofa-member-card {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--20);
+	transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.aofa-member-card:hover {
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1) !important;
+	transform: translateY(-2px);
+}
+
+.aofa-member-type-badge {
+	display: inline-block;
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	padding: 3px 8px;
+	border-radius: 20px;
+	background: var(--wp--preset--color--aofa-primary);
+	color: #fff;
+}
+
+.aofa-member-type-badge.honorary {
+	background: var(--wp--preset--color--aofa-accent);
+	color: var(--wp--preset--color--aofa-text);
+}
+
+/* ── 10. Tables (Members, EC) ─────────────────────────────────────────────── */
+
+.aofa-data-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: var(--wp--preset--font-size--sm);
+}
+
+.aofa-data-table th {
+	background: var(--wp--preset--color--aofa-primary);
+	color: #fff;
+	padding: 0.75rem 1rem;
+	text-align: left;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+}
+
+.aofa-data-table td {
+	padding: 0.7rem 1rem;
+	border-bottom: 1px solid var(--wp--preset--color--aofa-border);
+	vertical-align: top;
+}
+
+.aofa-data-table tr:nth-child(even) td {
+	background: var(--wp--preset--color--aofa-bg);
+}
+
+.aofa-data-table tr:hover td {
+	background: rgba(201, 152, 42, 0.08);
+}
+
+/* ── 11. Notice / Article Entries ────────────────────────────────────────── */
+
+.aofa-notice-date,
+.aofa-article-meta {
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--aofa-accent);
+}
+
+/* ── 12. Footer ───────────────────────────────────────────────────────────── */
+
+.aofa-site-footer {
+	border-top: 4px solid var(--wp--preset--color--aofa-accent);
+}
+
+.aofa-site-footer a {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+.aofa-site-footer a:hover {
+	color: var(--wp--preset--color--aofa-accent-light);
+}
+
+/* ── 13. Pagination ───────────────────────────────────────────────────────── */
+
+.wp-block-query-pagination {
+	margin-top: var(--wp--preset--spacing--70);
+}
+
+.wp-block-query-pagination a,
+.wp-block-query-pagination span {
+	min-width: 44px;
+	min-height: 44px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.5rem 0.75rem;
+	border-radius: 6px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.wp-block-query-pagination a:hover {
+	background: var(--wp--preset--color--aofa-primary);
+	color: #fff;
+}
+
+.wp-block-query-pagination-numbers .current {
+	background: var(--wp--preset--color--aofa-accent);
+	color: var(--wp--preset--color--aofa-text);
+}
+
+/* ── 14. Breadcrumbs ──────────────────────────────────────────────────────── */
+
+.aofa-breadcrumb {
+	font-size: var(--wp--preset--font-size--sm);
+	color: var(--wp--preset--color--aofa-text-muted);
+	padding: var(--wp--preset--spacing--30) 0;
+	margin-bottom: var(--wp--preset--spacing--50);
+}
+
+.aofa-breadcrumb a {
+	color: var(--wp--preset--color--aofa-primary-light);
+}
+
+/* ── 15. Read More Link ───────────────────────────────────────────────────── */
+
+.aofa-read-more {
+	font-weight: 600;
+	font-size: var(--wp--preset--font-size--sm);
+	color: var(--wp--preset--color--aofa-primary);
+	text-decoration: none;
+}
+
+.aofa-read-more:hover {
+	color: var(--wp--preset--color--aofa-accent);
+	text-decoration: underline;
+}
+
+/* ── 16. Screen-Reader Only (WCAG) ───────────────────────────────────────── */
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+/* ── 17. 404 Page ─────────────────────────────────────────────────────────── */
+
+.aofa-404-wrapper {
+	text-align: center;
+	padding: var(--wp--preset--spacing--100) var(--wp--preset--spacing--40);
+}
+
+/* ── 18. Responsive Utilities ─────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+	/* Stack hero column on mobile */
+	.wp-block-columns.is-not-stacked-on-mobile {
+		flex-direction: column !important;
+	}
+
+	/* Full-width cards on mobile */
+	.wp-block-post-template.is-flex-container.is-flex-container.columns-3 > li,
+	.wp-block-post-template.is-flex-container.is-flex-container.columns-2 > li {
+		width: 100% !important;
+	}
+
+	/* Reduce hero heading size on small screens */
+	.aofa-main-home h1 {
+		font-size: var(--wp--preset--font-size--3xl) !important;
+	}
+
+	/* Full-width table on mobile — horizontal scroll */
+	.aofa-data-table-wrapper {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+}
+
+@media (max-width: 782px) {
+	.aofa-data-table th,
+	.aofa-data-table td {
+		padding: 0.5rem 0.6rem;
+	}
+}
+
+/* ── 19. Reduced Motion (WCAG 2.3.3) ─────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* ── 20. High Contrast Mode ───────────────────────────────────────────────── */
+
+@media (forced-colors: active) {
+	.aofa-card {
+		border: 2px solid ButtonText;
+	}
+
+	.wp-block-button__link {
+		border: 2px solid ButtonText;
+	}
+}

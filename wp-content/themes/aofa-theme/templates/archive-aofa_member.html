@@ -1,0 +1,53 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"aofa-main-archive","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|90"}}},"layout":{"type":"constrained"}} -->
+<main class="wp-block-group aofa-main-archive" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--90)">
+
+	<!-- wp:group {"align":"wide","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|60"}}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+	<div class="wp-block-group alignwide" style="margin-bottom:var(--wp--preset--spacing--60)">
+		<!-- wp:query-title {"type":"archive","showPrefix":false,"style":{"typography":{"fontSize":"var:preset|font-size|4xl"}}} /-->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:query {"queryId":4,"query":{"perPage":24,"pages":0,"offset":0,"postType":"aofa_member","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":true},"align":"wide"} -->
+	<div class="wp-block-query alignwide">
+		<!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+			<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|40","right":"var:preset|spacing|40","bottom":"var:preset|spacing|40","left":"var:preset|spacing|40"}},"border":{"color":"var:preset|color|aofa-border","radius":"8px","width":"1px"}},"layout":{"type":"constrained"}} -->
+			<div class="wp-block-group" style="border-color:var(--wp--preset--color--aofa-border);border-width:1px;border-radius:8px;padding-top:var(--wp--preset--spacing--40);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40);padding-left:var(--wp--preset--spacing--40)">
+				
+				<!-- wp:post-title {"isLink":true,"level":3,"style":{"typography":{"fontSize":"var:preset|font-size|lg"},"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} /-->
+				
+				<!-- wp:post-terms {"term":"aofa_member_type","style":{"typography":{"fontSize":"var:preset|font-size|xs","fontWeight":"600"}}} /-->
+				
+				<!-- wp:group {"style":{"spacing":{"margin":{"top":"var:preset|spacing|30"}}},"layout":{"type":"flex","orientation":"vertical","justifyContent":"stretch","flexWrap":"nowrap"}} -->
+				<div class="wp-block-group" style="margin-top:var(--wp--preset--spacing--30)">
+					<!-- Placeholder for Contact Info block binding or custom fields rendering -->
+					<!-- wp:paragraph {"style":{"typography":{"fontSize":"var:preset|font-size|sm"},"color":{"text":"var:preset|color|aofa-text-muted"}}} -->
+					<p class="has-aofa-text-muted-color has-text-color" style="font-size:var(--wp--preset--font-size--sm)">Click to view contact details</p>
+					<!-- /wp:paragraph -->
+				</div>
+				<!-- /wp:group -->
+
+			</div>
+			<!-- /wp:group -->
+		<!-- /wp:post-template -->
+
+		<!-- wp:query-no-results -->
+			<!-- wp:paragraph -->
+			<p>No members found.</p>
+			<!-- /wp:paragraph -->
+		<!-- /wp:query-no-results -->
+
+		<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->
+			<!-- wp:query-pagination-previous /-->
+			<!-- wp:query-pagination-numbers /-->
+			<!-- wp:query-pagination-next /-->
+		<!-- /wp:query-pagination -->
+
+	</div>
+	<!-- /wp:query -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

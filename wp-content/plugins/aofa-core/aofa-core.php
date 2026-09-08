@@ -41,6 +41,8 @@ define( 'AOFA_CORE_URL', plugin_dir_url( __FILE__ ) );
  */
 require_once AOFA_CORE_PATH . 'includes/class-post-types.php';
 require_once AOFA_CORE_PATH . 'includes/class-taxonomies.php';
+require_once AOFA_CORE_PATH . 'includes/class-meta-boxes.php';
+require_once AOFA_CORE_PATH . 'includes/redirects.php';
 
 // WP-CLI commands are only loaded in the CLI context.
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
@@ -68,6 +70,20 @@ function aofa_core_init(): void {
 	Aofa_Taxonomies::register();
 }
 add_action( 'init', 'aofa_core_init' );
+
+// ── Meta Boxes ───────────────────────────────────────────────────────────────
+
+/** Register meta boxes in the admin. */
+add_action( 'add_meta_boxes', array( 'Aofa_Meta_Boxes', 'register' ) );
+
+/** Save Member meta. */
+add_action( 'save_post_aofa_member', array( 'Aofa_Meta_Boxes', 'save_member_meta' ) );
+
+/** Save EC Member meta. */
+add_action( 'save_post_aofa_ec_member', array( 'Aofa_Meta_Boxes', 'save_ec_member_meta' ) );
+
+/** Save Article meta. */
+add_action( 'save_post_aofa_article', array( 'Aofa_Meta_Boxes', 'save_article_meta' ) );
 
 /**
  * Register WP-CLI commands after WP-CLI has loaded.

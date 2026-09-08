@@ -1,55 +1,66 @@
 /**
  * AOFA Theme — theme.js
  *
- * Lightweight theme JavaScript. Deferred, no jQuery.
- * Spec Item: 001-initial-setup
+ * Vanilla JS only. No jQuery dependency.
+ * Handles: mobile nav, skip-to-content, WCAG focus management.
  *
  * @package AofaTheme
+ * @since   1.0.0
  */
 
 ( function () {
 	'use strict';
 
-	/**
-	 * Adds a scrolled class to the header when the user scrolls down.
-	 * Used to trigger a sticky header shadow effect via CSS.
-	 */
-	function initStickyHeader() {
-		const header = document.querySelector( '.aofa-site-header' );
-		if ( ! header ) {
-			return;
-		}
-
-		window.addEventListener(
-			'scroll',
-			function () {
-				if ( window.scrollY > 20 ) {
-					header.classList.add( 'is-scrolled' );
-				} else {
-					header.classList.remove( 'is-scrolled' );
-				}
-			},
-			{ passive: true }
-		);
+	// ── Skip to content link ────────────────────────────────────────────────
+	// Inject the skip link if it is not already in the template
+	const existingSkip = document.querySelector( '.skip-to-content' );
+	if ( ! existingSkip ) {
+		const skip = document.createElement( 'a' );
+		skip.href      = '#main-content';
+		skip.className = 'skip-to-content';
+		skip.textContent = 'Skip to main content';
+		document.body.insertBefore( skip, document.body.firstChild );
 	}
 
-	/**
-	 * Smooth scroll for anchor links.
-	 */
-	function initSmoothScroll() {
-		document.querySelectorAll( 'a[href^="#"]' ).forEach( function ( anchor ) {
-			anchor.addEventListener( 'click', function ( event ) {
-				const target = document.querySelector( this.getAttribute( 'href' ) );
-				if ( target ) {
-					event.preventDefault();
-					target.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+	// ── Announce page title to screen readers on navigation (SPA-safety) ───
+	const title = document.querySelector( 'title' );
+	if ( title ) {
+		const announcer = document.createElement( 'div' );
+		announcer.setAttribute( 'aria-live', 'polite' );
+		announcer.setAttribute( 'aria-atomic', 'true' );
+		announcer.className = 'sr-only';
+		announcer.id        = 'aofa-sr-announcer';
+		document.body.appendChild( announcer );
+	}
+
+	// ── Header: sticky shadow enhancement ──────────────────────────────────
+	const header = document.querySelector( '.aofa-site-header' );
+	if ( header ) {
+		const onScroll = () => {
+			if ( window.scrollY > 10 ) {
+				header.classList.add( 'is-scrolled' );
+			} else {
+				header.classList.remove( 'is-scrolled' );
+			}
+		};
+		window.addEventListener( 'scroll', onScroll, { passive: true } );
+		onScroll();
+	}
+
+	// ── Card hover: keyboard-accessible ────────────────────────────────────
+	document.querySelectorAll( '.aofa-card' ).forEach( ( card ) => {
+		const link = card.querySelector( 'a' );
+		if ( link ) {
+			// Make the whole card keyboard navigable
+			card.setAttribute( 'role', 'link' );
+			card.setAttribute( 'tabindex', '0' );
+			card.addEventListener( 'keydown', ( e ) => {
+				if ( e.key === 'Enter' || e.key === ' ' ) {
+					e.preventDefault();
+					link.click();
 				}
 			} );
-		} );
-	}
-
-	document.addEventListener( 'DOMContentLoaded', function () {
-		initStickyHeader();
-		initSmoothScroll();
+		}
 	} );
-}() );
+
+} )();

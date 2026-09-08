@@ -1,0 +1,64 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"aofa-main-archive","id":"main-content","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|90"}}},"layout":{"type":"constrained"}} -->
+<main class="wp-block-group aofa-main-archive" id="main-content" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--90)">
+
+	<!-- Header row -->
+	<!-- wp:group {"align":"wide","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|60"}}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
+	<div class="wp-block-group alignwide" style="margin-bottom:var(--wp--preset--spacing--60)">
+		<!-- wp:heading {"level":1,"style":{"typography":{"fontSize":"var:preset|font-size|4xl"}}} -->
+		<h1 class="wp-block-heading" style="font-size:var(--wp--preset--font-size--4xl)">Articles &amp; Book Reviews</h1>
+		<!-- /wp:heading -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- Articles query -->
+	<!-- wp:query {"queryId":11,"query":{"perPage":10,"pages":0,"offset":0,"postType":"aofa_article","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true},"align":"wide"} -->
+	<div class="wp-block-query alignwide">
+
+		<!-- wp:post-template {"layout":{"type":"grid","columnCount":2}} -->
+			<!-- wp:group {"className":"aofa-card","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","right":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50"}},"border":{"radius":"8px","width":"1px","color":"var:preset|color|aofa-border"}},"backgroundColor":"aofa-surface","layout":{"type":"constrained"}} -->
+			<div class="wp-block-group aofa-card has-aofa-surface-background-color has-background" style="padding:var(--wp--preset--spacing--50);border-radius:8px;border-width:1px;border-color:var(--wp--preset--color--aofa-border)">
+
+				<!-- Category badge -->
+				<!-- wp:post-terms {"term":"aofa_article_category","style":{"elements":{"link":{"color":{"text":"var:preset|color|aofa-surface"}}},"typography":{"fontSize":"var:preset|font-size|xs","fontWeight":"700","letterSpacing":"0.08em","textTransform":"uppercase"},"spacing":{"padding":{"top":"3px","bottom":"3px","left":"10px","right":"10px"}},"border":{"radius":"20px"},"color":{"background":"var:preset|color|aofa-primary"}}} /-->
+
+				<!-- Title -->
+				<!-- wp:post-title {"isLink":true,"level":3,"style":{"typography":{"fontSize":"var:preset|font-size|lg"},"spacing":{"margin":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|20"}}}} /-->
+
+				<!-- Author + date row -->
+				<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","verticalAlignment":"center"},"style":{"spacing":{"blockGap":"var:preset|spacing|20","margin":{"bottom":"var:preset|spacing|30"}}}} -->
+				<div class="wp-block-group" style="margin-bottom:var(--wp--preset--spacing--30)">
+					<!-- wp:post-author {"showAvatar":false,"style":{"typography":{"fontSize":"var:preset|font-size|sm"},"color":{"text":"var:preset|color|aofa-text-muted"}}} /-->
+					<!-- wp:paragraph {"style":{"typography":{"fontSize":"var:preset|font-size|sm"},"color":{"text":"var:preset|color|aofa-border"}}} -->
+					<p class="has-aofa-border-color has-text-color" style="font-size:var(--wp--preset--font-size--sm)">·</p>
+					<!-- /wp:paragraph -->
+					<!-- wp:post-date {"style":{"typography":{"fontSize":"var:preset|font-size|sm"},"color":{"text":"var:preset|color|aofa-text-muted"}}} /-->
+				</div>
+				<!-- /wp:group -->
+
+				<!-- Excerpt -->
+				<!-- wp:post-excerpt {"moreText":"Read article →","excerptLength":25} /-->
+			</div>
+			<!-- /wp:group -->
+		<!-- /wp:post-template -->
+
+		<!-- wp:query-no-results -->
+			<!-- wp:paragraph {"align":"center"} -->
+			<p class="has-text-align-center">No articles found.</p>
+			<!-- /wp:paragraph -->
+		<!-- /wp:query-no-results -->
+
+		<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->
+			<!-- wp:query-pagination-previous /-->
+			<!-- wp:query-pagination-numbers /-->
+			<!-- wp:query-pagination-next /-->
+		<!-- /wp:query-pagination -->
+
+	</div>
+	<!-- /wp:query -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

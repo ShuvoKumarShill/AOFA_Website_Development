@@ -1,0 +1,141 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"aofa-main-home","layout":{"type":"default"}} -->
+<main class="wp-block-group aofa-main-home">
+
+	<!-- Hero Section -->
+	<!-- wp:group {"align":"full","style":{"color":{"background":"var:preset|color|aofa-primary"},"spacing":{"padding":{"top":"var:preset|spacing|90","bottom":"var:preset|spacing|90","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}}},"layout":{"type":"constrained"}} -->
+	<div class="wp-block-group alignfull has-aofa-primary-background-color has-background" style="padding-top:var(--wp--preset--spacing--90);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--90);padding-left:var(--wp--preset--spacing--40)">
+		
+		<!-- wp:columns {"align":"wide"} -->
+		<div class="wp-block-columns alignwide">
+			<!-- wp:column {"width":"60%"} -->
+			<div class="wp-block-column" style="flex-basis:60%">
+				<!-- wp:heading {"level":1,"style":{"color":{"text":"var:preset|color|aofa-surface"},"typography":{"fontSize":"var:preset|font-size|5xl"}}} -->
+				<h1 class="wp-block-heading has-aofa-surface-color has-text-color" style="font-size:var(--wp--preset--font-size--5xl)">Association of Former BCS(FA) Ambassadors</h1>
+				<!-- /wp:heading -->
+
+				<!-- wp:paragraph {"style":{"color":{"text":"var:preset|color|aofa-bg"},"typography":{"fontSize":"var:preset|font-size|lg"},"spacing":{"margin":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|60"}}}} -->
+				<p class="has-aofa-bg-color has-text-color" style="margin-top:var(--wp--preset--spacing--40);margin-bottom:var(--wp--preset--spacing--60);font-size:var(--wp--preset--font-size--lg)">Serving the nation through diplomatic experience. An organization dedicated to fostering international relations and supporting former ambassadors of Bangladesh.</p>
+				<!-- /wp:paragraph -->
+
+				<!-- wp:buttons -->
+				<div class="wp-block-buttons">
+					<!-- wp:button {"backgroundColor":"aofa-accent","textColor":"aofa-text"} -->
+					<div class="wp-block-button"><a class="wp-block-button__link has-aofa-text-color has-aofa-accent-background-color has-text-color has-background wp-element-button" href="/about">About AOFA</a></div>
+					<!-- /wp:button -->
+					
+					<!-- wp:button {"backgroundColor":"aofa-primary-light","textColor":"aofa-surface"} -->
+					<div class="wp-block-button"><a class="wp-block-button__link has-aofa-surface-color has-aofa-primary-light-background-color has-text-color has-background wp-element-button" href="/members">Member Directory</a></div>
+					<!-- /wp:button -->
+				</div>
+				<!-- /wp:buttons -->
+			</div>
+			<!-- /wp:column -->
+
+			<!-- wp:column {"width":"40%"} -->
+			<div class="wp-block-column" style="flex-basis:40%">
+				<!-- Placeholder for Hero Image / Logo -->
+				<!-- wp:image {"aspectRatio":"1","scale":"cover","sizeSlug":"large"} -->
+				<figure class="wp-block-image size-large"><img src="" alt="" style="aspect-ratio:1;object-fit:cover"/></figure>
+				<!-- /wp:image -->
+			</div>
+			<!-- /wp:column -->
+		</div>
+		<!-- /wp:columns -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- Recent Notices Section -->
+	<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}},"backgroundColor":"aofa-bg","layout":{"type":"constrained"}} -->
+	<div class="wp-block-group alignfull has-aofa-bg-background-color has-background" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)">
+		
+		<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+		<div class="wp-block-group alignwide">
+			<!-- wp:heading {"level":2} -->
+			<h2 class="wp-block-heading">Official Notices</h2>
+			<!-- /wp:heading -->
+			<!-- wp:paragraph -->
+			<p><a href="/notice">View all notices &rarr;</a></p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:group -->
+
+		<!-- wp:spacer {"height":"32px"} -->
+		<div style="height:32px" aria-hidden="true" class="wp-block-spacer"></div>
+		<!-- /wp:spacer -->
+
+		<!-- wp:query {"queryId":2,"query":{"perPage":3,"pages":0,"offset":0,"postType":"aofa_notice","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false},"align":"wide"} -->
+		<div class="wp-block-query alignwide">
+			<!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+				<!-- wp:group {"className":"aofa-card","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","right":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50"}},"border":{"radius":"8px"},"shadow":"var:preset|shadow|sm"},"backgroundColor":"aofa-surface","layout":{"type":"constrained"}} -->
+				<div class="wp-block-group aofa-card has-aofa-surface-background-color has-background" style="padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)">
+					<!-- wp:post-date {"style":{"typography":{"fontSize":"var:preset|font-size|sm","fontWeight":"600"},"color":{"text":"var:preset|color|aofa-accent"}}} /-->
+					<!-- wp:post-title {"isLink":true,"level":3,"style":{"typography":{"fontSize":"var:preset|font-size|lg"},"spacing":{"margin":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}}} /-->
+					<!-- wp:post-excerpt {"moreText":"Read Notice","excerptLength":15} /-->
+				</div>
+				<!-- /wp:group -->
+			<!-- /wp:post-template -->
+			<!-- wp:query-no-results -->
+				<!-- wp:paragraph -->
+				<p>No recent notices.</p>
+				<!-- /wp:paragraph -->
+			<!-- /wp:query-no-results -->
+		</div>
+		<!-- /wp:query -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- Recent Articles Section -->
+	<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|80"}}},"layout":{"type":"constrained"}} -->
+	<div class="wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--80)">
+		
+		<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+		<div class="wp-block-group alignwide">
+			<!-- wp:heading {"level":2} -->
+			<h2 class="wp-block-heading">Articles &amp; Book Reviews</h2>
+			<!-- /wp:heading -->
+			<!-- wp:paragraph -->
+			<p><a href="/article">View all publications &rarr;</a></p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:group -->
+
+		<!-- wp:spacer {"height":"32px"} -->
+		<div style="height:32px" aria-hidden="true" class="wp-block-spacer"></div>
+		<!-- /wp:spacer -->
+
+		<!-- wp:query {"queryId":3,"query":{"perPage":4,"pages":0,"offset":0,"postType":"aofa_article","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false},"align":"wide"} -->
+		<div class="wp-block-query alignwide">
+			<!-- wp:post-template {"layout":{"type":"grid","columnCount":2}} -->
+				<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|50","right":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|50"}},"border":{"color":"var:preset|color|aofa-border","radius":"8px","width":"1px"}},"layout":{"type":"constrained"}} -->
+				<div class="wp-block-group" style="border-color:var(--wp--preset--color--aofa-border);border-width:1px;border-radius:8px;padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)">
+					<!-- wp:post-title {"isLink":true,"level":3,"style":{"typography":{"fontSize":"var:preset|font-size|xl"},"spacing":{"margin":{"bottom":"var:preset|spacing|20"}}}} /-->
+					<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
+					<div class="wp-block-group">
+						<!-- wp:post-author {"showAvatar":false,"style":{"typography":{"fontSize":"var:preset|font-size|sm"}}} /-->
+						<!-- wp:paragraph {"style":{"typography":{"fontSize":"var:preset|font-size|sm"},"color":{"text":"var:preset|color|aofa-text-muted"}}} -->
+						<p class="has-aofa-text-muted-color has-text-color" style="font-size:var(--wp--preset--font-size--sm)">|</p>
+						<!-- /wp:paragraph -->
+						<!-- wp:post-date {"style":{"typography":{"fontSize":"var:preset|font-size|sm"},"color":{"text":"var:preset|color|aofa-text-muted"}}} /-->
+					</div>
+					<!-- /wp:group -->
+					<!-- wp:post-excerpt {"moreText":"Read full article","excerptLength":20} /-->
+				</div>
+				<!-- /wp:group -->
+			<!-- /wp:post-template -->
+			<!-- wp:query-no-results -->
+				<!-- wp:paragraph -->
+				<p>No recent publications.</p>
+				<!-- /wp:paragraph -->
+			<!-- /wp:query-no-results -->
+		</div>
+		<!-- /wp:query -->
+
+	</div>
+	<!-- /wp:group -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

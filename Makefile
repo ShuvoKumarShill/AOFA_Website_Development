@@ -65,6 +65,19 @@ import-members: ## Import members from recovered CSV via WP-CLI
 	  --file=/var/www/html/wp-content/plugins/aofa-core/data/members.csv
 	@echo "✅  Members imported."
 
+import-ec: ## Import Executive Committee members via WP-CLI
+	$(WPCLI) aofa import-ec \
+	  --file=/var/www/html/wp-content/plugins/aofa-core/data/ec_members.csv
+	@echo "✅  EC Members imported."
+
+import-notices: ## Import Notices via WP-CLI
+	$(WPCLI) aofa import-notices
+	@echo "✅  Notices imported."
+
+import-articles: ## Import Articles via WP-CLI
+	$(WPCLI) aofa import-articles
+	@echo "✅  Articles imported."
+
 ## ── Quality & Specs ─────────────────────────────────────────────────────────
 
 spec: ## Open Spec Kit constitution

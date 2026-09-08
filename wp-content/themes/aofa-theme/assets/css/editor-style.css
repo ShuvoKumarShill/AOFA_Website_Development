@@ -1,18 +1,22 @@
 /**
- * AOFA Theme — Editor Styles
+ * AOFA Theme — Block Editor Stylesheet
  *
- * Applied inside the block editor to make it match the front end.
- * Spec Item: 001-initial-setup
+ * Ensures the block editor (Gutenberg) visually matches the front end.
+ * Only editor-specific overrides belong here; global styles live in style.css.
  *
  * @package AofaTheme
+ * @since   1.0.0
  */
 
-/* Increase editor content width to match theme layout */
+/* ── Editor body ────────────────────────────────────────────────────────── */
+
 .editor-styles-wrapper {
-	font-family: 'Inter', sans-serif;
-	color: #1e1e2e;
-	line-height: 1.7;
+	font-family: var(--wp--preset--font-family--inter);
+	color: var(--wp--preset--color--aofa-text);
+	background: var(--wp--preset--color--aofa-bg);
 }
+
+/* ── Headings in editor ─────────────────────────────────────────────────── */
 
 .editor-styles-wrapper h1,
 .editor-styles-wrapper h2,
@@ -20,14 +24,34 @@
 .editor-styles-wrapper h4,
 .editor-styles-wrapper h5,
 .editor-styles-wrapper h6 {
-	font-family: 'Playfair Display', serif;
-	color: #1a3a5c;
+	font-family: var(--wp--preset--font-family--playfair);
+	color: var(--wp--preset--color--aofa-primary);
 	line-height: 1.25;
 }
 
-/* AOFA card class preview in editor */
+/* ── Links in editor ────────────────────────────────────────────────────── */
+
+.editor-styles-wrapper a {
+	color: var(--wp--preset--color--aofa-primary-light);
+	text-underline-offset: 3px;
+}
+
+.editor-styles-wrapper a:hover {
+	color: var(--wp--preset--color--aofa-accent);
+}
+
+/* ── Blockquote ─────────────────────────────────────────────────────────── */
+
+.editor-styles-wrapper blockquote {
+	border-left: 4px solid var(--wp--preset--color--aofa-accent);
+	padding-left: 1.25rem;
+	font-style: italic;
+	color: var(--wp--preset--color--aofa-text-muted);
+}
+
+/* ── Card preview ───────────────────────────────────────────────────────── */
+
 .editor-styles-wrapper .aofa-card {
+	border: 1px solid var(--wp--preset--color--aofa-border);
 	border-radius: 8px;
-	box-shadow: 0 4px 12px rgba(0,0,0,0.10);
-	overflow: hidden;
 }

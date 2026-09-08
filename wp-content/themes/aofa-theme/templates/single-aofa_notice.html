@@ -1,0 +1,45 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"aofa-main-single","id":"main-content","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|90"}}},"layout":{"type":"constrained"}} -->
+<main class="wp-block-group aofa-main-single" id="main-content" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--90)">
+
+	<!-- Breadcrumb -->
+	<!-- wp:group {"align":"wide","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|50"}}},"layout":{"type":"flex"}} -->
+	<div class="wp-block-group alignwide aofa-breadcrumb" style="margin-bottom:var(--wp--preset--spacing--50)">
+		<!-- wp:paragraph {"style":{"typography":{"fontSize":"var:preset|font-size|sm"}}} -->
+		<p style="font-size:var(--wp--preset--font-size--sm)"><a href="/notice">Notices</a> &rsaquo; <span>Current Notice</span></p>
+		<!-- /wp:paragraph -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- Header group -->
+	<!-- wp:group {"align":"wide","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|60"},"padding":{"bottom":"var:preset|spacing|60"}},"border":{"bottom":{"color":"var:preset|color|aofa-border","width":"1px"}}},"layout":{"type":"constrained"}} -->
+	<div class="wp-block-group alignwide" style="margin-bottom:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);border-bottom-color:var(--wp--preset--color--aofa-border);border-bottom-width:1px">
+
+		<!-- wp:post-date {"className":"aofa-notice-date","style":{"typography":{"fontSize":"var:preset|font-size|sm","fontWeight":"700","letterSpacing":"0.07em","textTransform":"uppercase"},"color":{"text":"var:preset|color|aofa-accent"}}} /-->
+
+		<!-- wp:post-title {"level":1,"style":{"typography":{"fontSize":"var:preset|font-size|4xl"},"spacing":{"margin":{"top":"var:preset|spacing|20"}}}} /-->
+
+	</div>
+	<!-- /wp:group -->
+
+	<!-- Content -->
+	<!-- wp:group {"align":"wide","layout":{"type":"constrained","contentSize":"700px"}} -->
+	<div class="wp-block-group alignwide">
+		<!-- wp:post-content /-->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- Back link -->
+	<!-- wp:group {"align":"wide","style":{"spacing":{"margin":{"top":"var:preset|spacing|80"},"padding":{"top":"var:preset|spacing|50"}},"border":{"top":{"color":"var:preset|color|aofa-border","width":"1px"}}},"layout":{"type":"flex"}} -->
+	<div class="wp-block-group alignwide" style="margin-top:var(--wp--preset--spacing--80);padding-top:var(--wp--preset--spacing--50);border-top-color:var(--wp--preset--color--aofa-border);border-top-width:1px">
+		<!-- wp:paragraph -->
+		<p><a href="/notice">&larr; Back to all Notices</a></p>
+		<!-- /wp:paragraph -->
+	</div>
+	<!-- /wp:group -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

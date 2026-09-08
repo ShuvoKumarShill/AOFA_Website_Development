@@ -178,6 +178,250 @@ class Aofa_CLI_Commands {
 	}
 
 	/**
+	 * Import AOFA EC members from a CSV file into the aofa_ec_member post type.
+	 *
+	 * ## OPTIONS
+	 *
+	 * [--file=<file>]
+	 * : Absolute path to the CSV file. Defaults to the bundled ec_members.csv.
+	 *
+	 * [--dry-run]
+	 * : Run without inserting data. Shows what would be imported.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp aofa import-ec
+	 *     wp aofa import-ec --dry-run
+	 *
+	 * @subcommand import-ec
+	 *
+	 * @param array $args       Positional arguments (unused).
+	 * @param array $assoc_args Associative arguments (flags).
+	 */
+	public function import_ec( array $args, array $assoc_args ): void {
+
+		// ── Resolve file path ────────────────────────────────────────────────
+		$default_file = AOFA_CORE_PATH . 'data/ec_members.csv';
+		$file         = isset( $assoc_args['file'] ) ? $assoc_args['file'] : $default_file;
+
+		if ( ! file_exists( $file ) ) {
+			WP_CLI::error( "CSV file not found: {$file}" );
+		}
+
+		$dry_run = isset( $assoc_args['dry-run'] );
+
+		// ── Open CSV ─────────────────────────────────────────────────────────
+		$handle = fopen( $file, 'r' );
+		if ( false === $handle ) {
+			WP_CLI::error( "Cannot open file: {$file}" );
+		}
+
+		// Read header row.
+		$headers = fgetcsv( $handle );
+		if ( false === $headers ) {
+			fclose( $handle );
+			WP_CLI::error( 'CSV file is empty or unreadable.' );
+		}
+		$headers = array_map( 'strtolower', array_map( 'trim', $headers ) );
+
+		$imported = 0;
+		$skipped  = 0;
+		$progress = WP_CLI\Utils\make_progress_bar( 'Importing EC members', 0 );
+
+		// ── Process rows ─────────────────────────────────────────────────────
+		while ( ( $row = fgetcsv( $handle ) ) !== false ) {
+
+			if ( count( $row ) !== count( $headers ) ) {
+				WP_CLI::warning( 'Skipping malformed row: ' . implode( ',', $row ) );
+				++$skipped;
+				continue;
+			}
+
+			$data = array_combine( $headers, $row );
+
+			$term     = sanitize_text_field( $data['term'] ?? '' );
+			$serial   = (int) ( $data['serial'] ?? 0 );
+			$name     = sanitize_text_field( $data['name'] ?? '' );
+			$position = sanitize_text_field( $data['position'] ?? '' );
+
+			if ( empty( $name ) ) {
+				WP_CLI::warning( 'Skipping row with empty name.' );
+				++$skipped;
+				continue;
+			}
+
+			// Avoid duplicates: Check for existing post with same name in same term
+			$existing = get_posts( array(
+				'post_type'      => 'aofa_ec_member',
+				'title'          => $name,
+				'posts_per_page' => 1,
+				'post_status'    => 'any',
+				'fields'         => 'ids',
+				'tax_query'      => array(
+					array(
+						'taxonomy' => 'aofa_committee_term',
+						'field'    => 'name',
+						'terms'    => $term,
+					),
+				),
+			) );
+
+			if ( ! empty( $existing ) ) {
+				WP_CLI::line( "  Skipping existing EC member: {$name} ({$term})" );
+				++$skipped;
+				continue;
+			}
+
+			if ( $dry_run ) {
+				WP_CLI::line( "[DRY-RUN] Would import: {$name} - {$position} ({$term})" );
+				++$imported;
+				$progress->tick();
+				continue;
+			}
+
+			// Insert post
+			$post_id = wp_insert_post( array(
+				'post_title'   => $name,
+				'post_status'  => 'publish',
+				'post_type'    => 'aofa_ec_member',
+				'menu_order'   => $serial, // Use menu_order to keep the logical sort
+			), true );
+
+			if ( is_wp_error( $post_id ) ) {
+				WP_CLI::warning( "Failed to insert '{$name}': " . $post_id->get_error_message() );
+				++$skipped;
+				continue;
+			}
+
+			// Store position as meta
+			update_post_meta( $post_id, '_aofa_position', $position );
+
+			// Assign taxonomy term
+			if ( ! empty( $term ) ) {
+				wp_set_object_terms( $post_id, $term, 'aofa_committee_term' );
+			}
+
+			++$imported;
+			$progress->tick();
+		}
+
+		fclose( $handle );
+		$progress->finish();
+
+		$mode = $dry_run ? '[DRY-RUN] Would have imported' : 'Imported';
+		WP_CLI::success( "{$mode} {$imported} EC members. Skipped: {$skipped}." );
+	}
+
+	/**
+	 * Import AOFA Notices from a CSV file into the aofa_notice post type.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp aofa import-notices
+	 *
+	 * @subcommand import-notices
+	 */
+	public function import_notices( array $args, array $assoc_args ): void {
+		$file = AOFA_CORE_PATH . 'data/notices.csv';
+		if ( ! file_exists( $file ) ) {
+			WP_CLI::error( "CSV file not found: {$file}" );
+		}
+
+		$handle = fopen( $file, 'r' );
+		$headers = fgetcsv( $handle );
+		$headers = array_map( 'strtolower', array_map( 'trim', $headers ) );
+
+		$imported = 0;
+		while ( ( $row = fgetcsv( $handle ) ) !== false ) {
+			if ( count( $row ) !== count( $headers ) ) continue;
+			$data = array_combine( $headers, $row );
+			
+			$title   = sanitize_text_field( $data['title'] ?? '' );
+			$content = sanitize_textarea_field( $data['content'] ?? '' );
+			
+			if ( empty( $title ) ) continue;
+
+			$existing = get_posts( array(
+				'post_type'      => 'aofa_notice',
+				'title'          => $title,
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+			) );
+
+			if ( ! empty( $existing ) ) continue;
+
+			wp_insert_post( array(
+				'post_title'   => $title,
+				'post_content' => $content,
+				'post_status'  => 'publish',
+				'post_type'    => 'aofa_notice',
+			) );
+			++$imported;
+		}
+		fclose( $handle );
+		WP_CLI::success( "Imported {$imported} notices." );
+	}
+
+	/**
+	 * Import AOFA Articles from a CSV file into the aofa_article post type.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp aofa import-articles
+	 *
+	 * @subcommand import-articles
+	 */
+	public function import_articles( array $args, array $assoc_args ): void {
+		$file = AOFA_CORE_PATH . 'data/articles.csv';
+		if ( ! file_exists( $file ) ) {
+			WP_CLI::error( "CSV file not found: {$file}" );
+		}
+
+		$handle = fopen( $file, 'r' );
+		$headers = fgetcsv( $handle );
+		$headers = array_map( 'strtolower', array_map( 'trim', $headers ) );
+
+		$imported = 0;
+		while ( ( $row = fgetcsv( $handle ) ) !== false ) {
+			if ( count( $row ) !== count( $headers ) ) continue;
+			$data = array_combine( $headers, $row );
+			
+			$title    = sanitize_text_field( $data['title'] ?? '' );
+			$author   = sanitize_text_field( $data['author'] ?? '' );
+			$content  = sanitize_textarea_field( $data['content'] ?? '' );
+			$category = sanitize_text_field( $data['category'] ?? '' );
+			
+			if ( empty( $title ) ) continue;
+
+			$existing = get_posts( array(
+				'post_type'      => 'aofa_article',
+				'title'          => $title,
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+			) );
+
+			if ( ! empty( $existing ) ) continue;
+
+			$post_id = wp_insert_post( array(
+				'post_title'   => $title,
+				'post_content' => $content,
+				'post_status'  => 'publish',
+				'post_type'    => 'aofa_article',
+			), true );
+
+			if ( ! is_wp_error( $post_id ) ) {
+				update_post_meta( $post_id, '_aofa_author', $author );
+				if ( ! empty( $category ) ) {
+					wp_set_object_terms( $post_id, $category, 'aofa_article_category' );
+				}
+				++$imported;
+			}
+		}
+		fclose( $handle );
+		WP_CLI::success( "Imported {$imported} articles." );
+	}
+
+	/**
 	 * Display AOFA Core plugin status.
 	 *
 	 * ## EXAMPLES

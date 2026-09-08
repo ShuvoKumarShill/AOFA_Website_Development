@@ -1,0 +1,59 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","className":"aofa-main-archive","id":"main-content","style":{"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|90"}}},"layout":{"type":"constrained"}} -->
+<main class="wp-block-group aofa-main-archive" id="main-content" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--90)">
+
+	<!-- Page title + count -->
+	<!-- wp:group {"align":"wide","style":{"spacing":{"margin":{"bottom":"var:preset|spacing|60"}}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
+	<div class="wp-block-group alignwide" style="margin-bottom:var(--wp--preset--spacing--60)">
+		<!-- wp:heading {"level":1,"style":{"typography":{"fontSize":"var:preset|font-size|4xl"}}} -->
+		<h1 class="wp-block-heading" style="font-size:var(--wp--preset--font-size--4xl)">Official Notices</h1>
+		<!-- /wp:heading -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- Notices query -->
+	<!-- wp:query {"queryId":10,"query":{"perPage":12,"pages":0,"offset":0,"postType":"aofa_notice","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true},"align":"wide"} -->
+	<div class="wp-block-query alignwide">
+
+		<!-- wp:post-template {"layout":{"type":"default"}} -->
+			<!-- wp:group {"className":"aofa-card","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","right":"var:preset|spacing|60","bottom":"var:preset|spacing|50","left":"var:preset|spacing|60"},"margin":{"bottom":"var:preset|spacing|40"}},"border":{"radius":"8px","left":{"color":"var:preset|color|aofa-accent","width":"4px"}}},"backgroundColor":"aofa-surface","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
+			<div class="wp-block-group aofa-card has-aofa-surface-background-color has-background" style="padding-top:var(--wp--preset--spacing--50);padding-right:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--60);margin-bottom:var(--wp--preset--spacing--40);border-radius:8px;border-left-color:var(--wp--preset--color--aofa-accent);border-left-width:4px">
+
+				<!-- wp:group {"layout":{"type":"constrained","justifyContent":"left"}} -->
+				<div class="wp-block-group">
+					<!-- wp:post-date {"className":"aofa-notice-date","style":{"typography":{"fontSize":"var:preset|font-size|xs","fontWeight":"600","letterSpacing":"0.07em","textTransform":"uppercase"},"color":{"text":"var:preset|color|aofa-accent"}}} /-->
+					<!-- wp:post-title {"isLink":true,"level":3,"style":{"typography":{"fontSize":"var:preset|font-size|xl"},"spacing":{"margin":{"top":"var:preset|spacing|20","bottom":"var:preset|spacing|10"}}}} /-->
+					<!-- wp:post-excerpt {"excerptLength":20} /-->
+				</div>
+				<!-- /wp:group -->
+
+				<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
+				<div class="wp-block-group">
+					<!-- wp:read-more {"content":"Read Notice &rarr;","style":{"typography":{"fontWeight":"600"},"color":{"text":"var:preset|color|aofa-primary"}}} /-->
+				</div>
+				<!-- /wp:group -->
+
+			</div>
+			<!-- /wp:group -->
+		<!-- /wp:post-template -->
+
+		<!-- wp:query-no-results -->
+			<!-- wp:paragraph {"align":"center"} -->
+			<p class="has-text-align-center">No notices found.</p>
+			<!-- /wp:paragraph -->
+		<!-- /wp:query-no-results -->
+
+		<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->
+			<!-- wp:query-pagination-previous /-->
+			<!-- wp:query-pagination-numbers /-->
+			<!-- wp:query-pagination-next /-->
+		<!-- /wp:query-pagination -->
+
+	</div>
+	<!-- /wp:query -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
