@@ -1,0 +1,8 @@
+# WP-CLI global config for the AOFA Docker environment.
+# Spec Item: 001-initial-setup
+#
+# This tells WP-CLI the path and URL of the WordPress install
+# when running inside the container via `docker compose run --rm wpcli wp ...`
+
+path: /var/www/html
+url: http://localhost:8080

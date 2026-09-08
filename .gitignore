@@ -1,0 +1,60 @@
+# === Environment & Secrets ===
+.env
+*.local
+
+# === WordPress Core ===
+# Do not version-control WordPress core files.
+# They are managed via Docker image.
+wp-admin/
+wp-includes/
+wp-*.php
+xmlrpc.php
+index.php
+license.txt
+readme.html
+wp-config.php
+wp-config-sample.php
+
+# Keep our custom content
+!wp-content/
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/blogs.dir/
+wp-content/gallery/
+
+# === Composer ===
+vendor/
+composer.lock
+
+# === Node.js ===
+node_modules/
+npm-debug.log
+yarn-error.log
+.pnp/
+.pnp.js
+
+# === Build Artifacts ===
+dist/
+build/
+*.min.js
+*.min.css
+
+# === IDE & OS ===
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+*.log
+
+# === Docker ===
+mysql-data/
+
+# === PHPUnit ===
+.phpunit.result.cache
+coverage/

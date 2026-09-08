@@ -1,0 +1,33 @@
+/**
+ * AOFA Theme — Editor Styles
+ *
+ * Applied inside the block editor to make it match the front end.
+ * Spec Item: 001-initial-setup
+ *
+ * @package AofaTheme
+ */
+
+/* Increase editor content width to match theme layout */
+.editor-styles-wrapper {
+	font-family: 'Inter', sans-serif;
+	color: #1e1e2e;
+	line-height: 1.7;
+}
+
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3,
+.editor-styles-wrapper h4,
+.editor-styles-wrapper h5,
+.editor-styles-wrapper h6 {
+	font-family: 'Playfair Display', serif;
+	color: #1a3a5c;
+	line-height: 1.25;
+}
+
+/* AOFA card class preview in editor */
+.editor-styles-wrapper .aofa-card {
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+	overflow: hidden;
+}

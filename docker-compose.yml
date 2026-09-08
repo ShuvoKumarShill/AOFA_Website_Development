@@ -1,0 +1,114 @@
+# AOFA Website — docker-compose.yml
+# Spec Item: 001-initial-setup
+# Decisions:
+#   - WordPress latest (6.7+, PHP 8.2 via official image)
+#   - MariaDB 11 (faster than MySQL for WordPress read-heavy workloads)
+#   - phpMyAdmin for dev DB inspection
+#   - WP-CLI as a one-shot service (no persistent container)
+#   - Named volumes for data persistence across restarts
+
+services:
+
+  # ── Database ─────────────────────────────────────────────────────────────
+  db:
+    image: mariadb:11
+    container_name: aofa_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE:      ${MYSQL_DATABASE}
+      MYSQL_USER:          ${MYSQL_USER}
+      MYSQL_PASSWORD:      ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - aofa_net
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── WordPress ─────────────────────────────────────────────────────────────
+  wordpress:
+    image: wordpress:latest    # PHP 8.2 Apache (tracks latest stable)
+    container_name: aofa_wp
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST:     ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_NAME:     ${WORDPRESS_DB_NAME}
+      WORDPRESS_DB_USER:     ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
+      WORDPRESS_DEBUG:       ${WORDPRESS_DEBUG}
+    volumes:
+      # Persist the entire WordPress installation so WP-CLI can access it
+      - wp_core:/var/www/html
+      # Mount our custom theme directly (live editing)
+      - ./wp-content/themes/aofa-theme:/var/www/html/wp-content/themes/aofa-theme:rw
+      # Mount our custom plugin directly (live editing)
+      - ./wp-content/plugins/aofa-core:/var/www/html/wp-content/plugins/aofa-core:rw
+      # Custom wp-config additions (salts, debug settings)
+      - ./docker/wp-config-extra.php:/var/www/html/wp-config-extra.php:ro
+    networks:
+      - aofa_net
+
+  # ── WP-CLI ───────────────────────────────────────────────────────────────
+  # Used as a one-shot runner: `docker compose run --rm wpcli wp <command>`
+  wpcli:
+    image: wordpress:cli-php8.2   # official WP-CLI image, PHP 8.2
+    container_name: aofa_wpcli
+    restart: no
+    depends_on:
+      db:
+        condition: service_healthy
+      wordpress:
+        condition: service_started
+    user: "33:33"   # www-data UID — matches Apache in wordpress image
+    environment:
+      WORDPRESS_DB_HOST:     ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_NAME:     ${WORDPRESS_DB_NAME}
+      WORDPRESS_DB_USER:     ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+    volumes:
+      - wp_core:/var/www/html
+      - ./wp-content/themes/aofa-theme:/var/www/html/wp-content/themes/aofa-theme:rw
+      - ./wp-content/plugins/aofa-core:/var/www/html/wp-content/plugins/aofa-core:rw
+      - ./docker/wp-config-extra.php:/var/www/html/wp-config-extra.php:ro
+    working_dir: /var/www/html
+    networks:
+      - aofa_net
+
+  # ── phpMyAdmin (dev only) ─────────────────────────────────────────────────
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: aofa_pma
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST:     db
+      PMA_USER:     ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - aofa_net
+
+# ── Volumes ────────────────────────────────────────────────────────────────
+volumes:
+  db_data:
+    name: aofa_db_data
+  wp_core:
+    name: aofa_wp_core
+
+# ── Networks ───────────────────────────────────────────────────────────────
+networks:
+  aofa_net:
+    name: aofa_network
+    driver: bridge
