@@ -117,6 +117,22 @@ blockquote {
 	top: 0;
 	z-index: 100;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	/* Force navy background — FSE block JSON bg may not render reliably */
+	background-color: var(--wp--preset--color--aofa-primary) !important;
+	color: var(--wp--preset--color--aofa-surface) !important;
+}
+
+/* Ensure site title in header is always white and readable */
+.aofa-site-header .wp-block-site-title,
+.aofa-site-header .wp-block-site-title a {
+	color: var(--wp--preset--color--aofa-surface) !important;
+	text-decoration: none;
+}
+
+/* Ensure nav links in header are always white */
+.aofa-site-header .wp-block-navigation-item__content,
+.aofa-site-header .wp-block-navigation a {
+	color: var(--wp--preset--color--aofa-surface) !important;
 }
 
 /* Mobile nav toggle area */
@@ -179,6 +195,13 @@ blockquote {
 .aofa-main-single,
 .aofa-main-page {
 	min-height: 50vh;
+}
+
+/* Eliminate unintentional white margin gaps between consecutive full-width background sections */
+.aofa-main-home > .alignfull,
+.aofa-main-home > .wp-block-group.alignfull {
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
 }
 
 /* Section headings in main areas */
@@ -276,6 +299,59 @@ blockquote {
 
 .aofa-site-footer {
 	border-top: 4px solid var(--wp--preset--color--aofa-accent);
+	/* Force navy background — mirror of header fix */
+	background-color: var(--wp--preset--color--aofa-primary) !important;
+	color: var(--wp--preset--color--aofa-surface) !important;
+}
+
+/* Footer brand: site title must be white on navy */
+.aofa-site-footer .wp-block-site-title,
+.aofa-site-footer .wp-block-site-title a {
+	color: var(--wp--preset--color--aofa-surface) !important;
+	text-decoration: none;
+}
+
+.aofa-footer-heading {
+	font-size: var(--wp--preset--font-size--xs);
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--wp--preset--color--aofa-accent) !important;
+	margin-bottom: 1.25rem;
+	position: relative;
+	padding-bottom: 6px;
+}
+
+.aofa-footer-heading::after {
+	content: '';
+	display: block;
+	width: 28px;
+	height: 2px;
+	background: var(--wp--preset--color--aofa-accent);
+	margin-top: 4px;
+}
+
+.aofa-footer-links {
+	list-style: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+.aofa-footer-links li {
+	margin-bottom: 0.5rem;
+}
+
+.aofa-footer-links a {
+	color: rgba(255, 255, 255, 0.8) !important;
+	text-decoration: none !important;
+	font-size: var(--wp--preset--font-size--sm);
+	transition: color 0.15s ease, padding-left 0.15s ease;
+	display: inline-block;
+}
+
+.aofa-footer-links a:hover {
+	color: var(--wp--preset--color--aofa-accent) !important;
+	padding-left: 4px;
 }
 
 .aofa-site-footer a {

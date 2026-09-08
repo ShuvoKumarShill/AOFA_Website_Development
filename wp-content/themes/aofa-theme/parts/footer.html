@@ -1,54 +1,64 @@
-<!-- wp:group {"tagName":"footer","className":"aofa-site-footer","style":{"color":{"background":"var:preset|color|aofa-primary","text":"var:preset|color|aofa-surface"},"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
+<!-- wp:group {"tagName":"footer","className":"aofa-site-footer","style":{"color":{"background":"var:preset|color|aofa-primary","text":"var:preset|color|aofa-surface"},"spacing":{"padding":{"top":"var:preset|spacing|80","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
 <footer class="wp-block-group aofa-site-footer">
 
-	<!-- wp:columns {"style":{"spacing":{"blockGap":{"top":"var:preset|spacing|70","left":"var:preset|spacing|70"}}}} -->
-	<div class="wp-block-columns">
+	<!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"top":"var:preset|spacing|60","left":"var:preset|spacing|70"}}}} -->
+	<div class="wp-block-columns alignwide">
 
-		<!-- wp:column {"width":"40%"} -->
-		<div class="wp-block-column">
-			<!-- wp:site-logo {"width":70} /-->
-			<!-- wp:site-title {"style":{"typography":{"fontWeight":"700"},"color":{"text":"var:preset|color|aofa-surface"},"spacing":{"margin":{"top":"var:preset|spacing|30"}}}} /-->
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"var:preset|font-size|sm"},"color":{"text":"var:preset|color|aofa-accent-light"}}} -->
-			<p>Association of Former BCS(FA) Ambassadors, Bangladesh</p>
-			<!-- /wp:paragraph -->
+		<!-- Column 1: Organization & Crest -->
+		<!-- wp:column {"width":"45%"} -->
+		<div class="wp-block-column" style="flex-basis:45%">
+			<div class="aofa-footer-brand" style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+				<img src="/wp-content/themes/aofa-theme/assets/images/aofa-crest.png" alt="AOFA Crest" style="width:52px;height:52px;object-fit:contain;border-radius:50%" />
+				<div>
+					<h3 class="wp-block-heading" style="font-size:1.25rem;font-weight:700;color:var(--wp--preset--color--aofa-surface);margin:0;line-height:1.2">AOFA Bangladesh</h3>
+					<p style="font-size:0.75rem;color:var(--wp--preset--color--aofa-accent);margin:3px 0 0 0;text-transform:uppercase;letter-spacing:0.08em;font-weight:700">Association of Former BCS(FA) Ambassadors</p>
+				</div>
+			</div>
+			<p style="font-size:0.875rem;line-height:1.6;color:rgba(255,255,255,0.75);max-width:42ch">Serving Bangladesh through diplomatic wisdom, international policy stewardship, and decades of distinguished foreign service leadership.</p>
 		</div>
 		<!-- /wp:column -->
 
-		<!-- wp:column {"width":"30%"} -->
-		<div class="wp-block-column">
-			<!-- wp:heading {"level":4,"style":{"typography":{"fontSize":"var:preset|font-size|sm","fontWeight":"600","textTransform":"uppercase","letterSpacing":"0.1em"},"color":{"text":"var:preset|color|aofa-accent"}}} -->
-			<h4 class="wp-block-heading">Quick Links</h4>
-			<!-- /wp:heading -->
-			<!-- wp:navigation {"overlayBackgroundColor":"aofa-primary","style":{"typography":{"fontSize":"var:preset|font-size|sm"}},"layout":{"type":"flex","orientation":"vertical"}} /-->
+		<!-- Column 2: Quick Navigation -->
+		<!-- wp:column {"width":"25%"} -->
+		<div class="wp-block-column" style="flex-basis:25%">
+			<h4 class="aofa-footer-heading">Quick Links</h4>
+			<ul class="aofa-footer-links">
+				<li><a href="/">Home</a></li>
+				<li><a href="/about">About AOFA</a></li>
+				<li><a href="/messages">Messages</a></li>
+				<li><a href="/constitution">Constitution</a></li>
+				<li><a href="/executive-committee">Executive Committee</a></li>
+				<li><a href="/contact">Contact Us</a></li>
+			</ul>
 		</div>
 		<!-- /wp:column -->
 
+		<!-- Column 3: Secretariat & Contact -->
 		<!-- wp:column {"width":"30%"} -->
-		<div class="wp-block-column">
-			<!-- wp:heading {"level":4,"style":{"typography":{"fontSize":"var:preset|font-size|sm","fontWeight":"600","textTransform":"uppercase","letterSpacing":"0.1em"},"color":{"text":"var:preset|color|aofa-accent"}}} -->
-			<h4 class="wp-block-heading">Contact</h4>
-			<!-- /wp:heading -->
-			<!-- wp:paragraph {"style":{"typography":{"fontSize":"var:preset|font-size|sm"},"color":{"text":"var:preset|color|aofa-surface"}}} -->
-			<p>Dhaka, Bangladesh<br>Website: aofabd.com</p>
-			<!-- /wp:paragraph -->
+		<div class="wp-block-column" style="flex-basis:30%">
+			<h4 class="aofa-footer-heading">Secretariat</h4>
+			<p style="font-size:0.875rem;line-height:1.7;color:rgba(255,255,255,0.85);margin-bottom:12px">
+				<strong style="color:var(--wp--preset--color--aofa-surface)">Association of Former BCS(FA) Ambassadors</strong><br />
+				Dhaka, Bangladesh
+			</p>
+			<p style="font-size:0.875rem;line-height:1.7;color:rgba(255,255,255,0.85)">
+				<strong>Email:</strong> <a href="mailto:secretariat@aofabd.com" style="color:var(--wp--preset--color--aofa-accent-light)">secretariat@aofabd.com</a><br />
+				<strong>Web:</strong> <a href="https://aofabd.com" style="color:var(--wp--preset--color--aofa-accent-light)">aofabd.com</a>
+			</p>
 		</div>
 		<!-- /wp:column -->
 
 	</div>
 	<!-- /wp:columns -->
 
-	<!-- wp:separator {"style":{"color":{"background":"rgba(255,255,255,0.15)"},"spacing":{"margin":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|50"}}}} -->
-	<hr class="wp-block-separator has-alpha-channel-opacity"/>
-	<!-- /wp:separator -->
+	<!-- Bottom Separator Line -->
+	<div class="aofa-footer-divider" style="border-top:1px solid rgba(255,255,255,0.15);margin-top:2.5rem;margin-bottom:1.5rem"></div>
 
-	<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
-	<div class="wp-block-group">
-		<!-- wp:paragraph {"style":{"typography":{"fontSize":"var:preset|font-size|xs"},"color":{"text":"rgba(255,255,255,0.55)"}}} -->
-		<p>© 2026 Association of Former BCS(FA) Ambassadors. All rights reserved.</p>
-		<!-- /wp:paragraph -->
-		<!-- wp:paragraph {"style":{"typography":{"fontSize":"var:preset|font-size|xs"},"color":{"text":"rgba(255,255,255,0.55)"}}} -->
-		<p>Built with WordPress · Hosted in Bangladesh</p>
-		<!-- /wp:paragraph -->
+	<!-- Bottom Copyright Bar -->
+	<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
+	<div class="wp-block-group alignwide" style="font-size:0.8rem;color:rgba(255,255,255,0.6)">
+		<p>© 2026 Association of Former BCS(FA) Ambassadors (AOFA). All rights reserved.</p>
+		<p>Built for Foreign Policy Leadership · Hosted in Bangladesh</p>
 	</div>
 	<!-- /wp:group -->
 

@@ -179,7 +179,48 @@ function aofa_theme_clean_head(): void {
 add_action( 'init', 'aofa_theme_clean_head' );
 
 
-// ── Excerpt ──────────────────────────────────────────────────────────────────
+// ── Excerpt ────────────────────────────────────────────────────────────────────────
+
+/**
+ * Strips raw Markdown syntax from excerpt text.
+ *
+ * Post content is authored in Markdown, but WordPress's get_the_excerpt()
+ * returns raw text — so bold/italic markers (**text**, *text*), list dashes,
+ * headings (##), and horizontal rules (---) appear as literal characters in
+ * card excerpts on the front end. This filter cleans them to plain readable
+ * prose before WordPress truncates to the excerpt_length word count.
+ *
+ * Priority 5 — runs before the excerpt_length filter (priority 999) so
+ * the word count is applied to the already-cleaned string.
+ *
+ * @param  string $excerpt Raw excerpt text.
+ * @return string          Cleaned excerpt without Markdown syntax.
+ */
+function aofa_strip_markdown_from_excerpt( string $excerpt ): string {
+	if ( empty( $excerpt ) ) {
+		return $excerpt;
+	}
+	// Remove horizontal rules: --- or — at start of line.
+	$excerpt = preg_replace( '/^\s*[-–—]{3,}\s*$/m', '', $excerpt );
+	// Remove ATX headings: ## Heading
+	$excerpt = preg_replace( '/^#{1,6}\s+/m', '', $excerpt );
+	// Remove bold+italic asterisks: ***text*** or **text** or *text*
+	$excerpt = preg_replace( '/\*{1,3}([^\*\r\n]+)\*{1,3}/', '$1', $excerpt );
+	// Remove inline code: `code`
+	$excerpt = preg_replace( '/`([^`]+)`/', '$1', $excerpt );
+	// Remove leading list markers and bullets: - item or – item or * item
+	$excerpt = preg_replace( '/^\s*[-–—•\*]+\s*/m', '', $excerpt );
+	// Remove inline list markers like " - " or " – " inside text
+	$excerpt = preg_replace( '/\s+[-–—•]\s+/', ' ', $excerpt );
+	// Collapse runs of whitespace / blank lines to a single space.
+	$excerpt = preg_replace( '/[\r\n]+/', ' ', $excerpt );
+	$excerpt = preg_replace( '/\s{2,}/', ' ', $excerpt );
+	return trim( $excerpt );
+}
+// Priority 5: run before excerpt_length (999) and excerpt_more filters.
+add_filter( 'get_the_excerpt',  'aofa_strip_markdown_from_excerpt', 5 );
+add_filter( 'the_excerpt',      'aofa_strip_markdown_from_excerpt', 5 );
+add_filter( 'wp_trim_excerpt',  'aofa_strip_markdown_from_excerpt', 5 );
 
 /**
  * Sets the custom excerpt length for AOFA content.
