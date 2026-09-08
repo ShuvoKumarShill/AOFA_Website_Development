@@ -86,6 +86,25 @@ add_action( 'save_post_aofa_ec_member', array( 'Aofa_Meta_Boxes', 'save_ec_membe
 add_action( 'save_post_aofa_article', array( 'Aofa_Meta_Boxes', 'save_article_meta' ) );
 
 /**
+ * Enable Custom Post Types in Gutenberg Query Loop blocks on the front page and custom templates.
+ */
+add_filter( 'query_loop_block_query_vars', function( $query_vars, $block ) {
+	$requested_type = $block->context['query']['postType'] ?? $block->parsed_block['attrs']['query']['postType'] ?? '';
+	if ( ! empty( $requested_type ) ) {
+		$query_vars['post_type']   = sanitize_text_field( $requested_type );
+		$query_vars['post_status'] = 'publish';
+		$query_vars['nopaging']    = false;
+		unset( $query_vars['page_id'], $query_vars['paged'] );
+	}
+
+	if ( is_object( $block ) && isset( $block->context['query']['perPage'] ) && ! empty( $block->context['query']['perPage'] ) ) {
+		$query_vars['posts_per_page'] = (int) $block->context['query']['perPage'];
+	}
+
+	return $query_vars;
+}, 10, 2 );
+
+/**
  * Register WP-CLI commands after WP-CLI has loaded.
  */
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
