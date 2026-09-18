@@ -71,6 +71,77 @@ function aofa_core_init(): void {
 }
 add_action( 'init', 'aofa_core_init' );
 
+/**
+ * Inject Executive Diplomatic Theme Styles to ensure high-end aesthetics.
+ */
+add_action( 'wp_head', function() {
+	?>
+	<style id="aofa-executive-styles">
+		/* ── Navigation Header Fixes ── */
+		.ast-primary-header-bar .site-navigation {
+			display: flex !important;
+			justify-content: flex-end !important;
+		}
+		.main-header-menu {
+			display: flex !important;
+			flex-wrap: nowrap !important;
+			align-items: center !important;
+			gap: 0.85rem !important;
+		}
+		.main-header-menu .menu-item > a {
+			padding: 0 8px !important;
+			font-size: 0.92rem !important;
+			font-weight: 600 !important;
+			color: #002B49 !important;
+			white-space: nowrap !important;
+			transition: color 0.25s ease !important;
+		}
+		.main-header-menu .menu-item > a:hover,
+		.main-header-menu .menu-item.current-menu-item > a {
+			color: #C5A059 !important;
+		}
+		.main-header-menu .sub-menu {
+			border-top: 3px solid #C5A059 !important;
+			border-radius: 0 0 6px 6px !important;
+			box-shadow: 0 10px 25px rgba(0, 43, 73, 0.12) !important;
+		}
+
+		/* ── Query Loop Cards Uniform Proportions ── */
+		.wp-block-query .wp-block-post-template {
+			display: grid !important;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+			gap: 1.75rem !important;
+		}
+		.wp-block-query .wp-block-group.has-white-background-color {
+			border-radius: 10px !important;
+			border: 1px solid #E2E8F0 !important;
+			transition: all 0.3s ease !important;
+			background: #ffffff !important;
+			box-shadow: 0 4px 14px rgba(0, 43, 73, 0.05) !important;
+		}
+		.wp-block-query .wp-block-group.has-white-background-color:hover {
+			transform: translateY(-4px) !important;
+			box-shadow: 0 14px 24px -6px rgba(0, 43, 73, 0.12) !important;
+			border-color: #C5A059 !important;
+		}
+
+		/* ── Executive Emblem Box ── */
+		.wp-block-image img {
+			border-radius: 8px;
+		}
+
+		/* ── Buttons ── */
+		.wp-block-button__link {
+			transition: all 0.3s ease !important;
+		}
+		.wp-block-button__link:hover {
+			transform: translateY(-2px) !important;
+			box-shadow: 0 8px 18px rgba(0, 43, 73, 0.2) !important;
+		}
+	</style>
+	<?php
+}, 999 );
+
 // ── Meta Boxes ───────────────────────────────────────────────────────────────
 
 /** Register meta boxes in the admin. */
@@ -166,10 +237,10 @@ function aofa_render_photo_gallery_shortcode( $atts = array() ): string {
 		<div class="aofa-gallery-grid">
 			<?php foreach ( $albums_data as $idx => $album ) : ?>
 				<div class="aofa-gallery-item" onclick="openAofaLightbox(<?php echo esc_attr( $idx ); ?>)" style="cursor:pointer;">
-					<div class="aofa-gallery-img-wrapper" style="position:relative;">
+					<div class="aofa-gallery-img-wrapper">
 						<img src="<?php echo esc_url( $album['cover'] ); ?>" alt="<?php echo esc_attr( $album['title'] ); ?>"/>
-						<div style="position:absolute;bottom:10px;right:10px;background:rgba(0,43,73,0.85);color:#C5A059;padding:4px 10px;border-radius:4px;font-size:0.8rem;font-weight:700;">
-							<span class="dashicons dashicons-images-alt2" style="vertical-align:middle;margin-right:4px;"></span>
+						<div class="aofa-photo-count-badge">
+							<span class="dashicons dashicons-images-alt2"></span>
 							<?php echo esc_html( $album['count'] ); ?> <?php echo ( $album['count'] === 1 ) ? 'Photo' : 'Photos'; ?>
 						</div>
 					</div>
@@ -189,20 +260,20 @@ function aofa_render_photo_gallery_shortcode( $atts = array() ): string {
 		<div class="aofa-lightbox-content">
 			<button class="aofa-lightbox-close" onclick="closeAofaLightbox()" aria-label="Close">&times;</button>
 			
-			<button class="aofa-lightbox-arrow aofa-lightbox-prev" onclick="changeAofaLightboxPhoto(-1)">&#10094;</button>
-			<button class="aofa-lightbox-arrow aofa-lightbox-next" onclick="changeAofaLightboxPhoto(1)">&#10095;</button>
+			<button id="aofaLightboxPrevBtn" class="aofa-lightbox-arrow aofa-lightbox-prev" onclick="changeAofaLightboxPhoto(-1)">&#10094;</button>
+			<button id="aofaLightboxNextBtn" class="aofa-lightbox-arrow aofa-lightbox-next" onclick="changeAofaLightboxPhoto(1)">&#10095;</button>
 
 			<div class="aofa-lightbox-body">
 				<div class="aofa-lightbox-header-info">
-					<h3 id="aofaLightboxTitle" style="color:#ffffff;margin:0 0 4px;font-size:1.3rem;"></h3>
-					<span id="aofaLightboxCounter" style="color:#C5A059;font-size:0.9rem;font-weight:600;"></span>
+					<h3 id="aofaLightboxTitle"></h3>
+					<span id="aofaLightboxCounter"></span>
 				</div>
 
 				<div class="aofa-lightbox-main-stage">
 					<img id="aofaLightboxImg" src="" alt=""/>
 				</div>
 
-				<p id="aofaLightboxCaption" style="color:#CBD5E1;font-size:0.95rem;margin:12px 0 0;text-align:center;max-width:800px;margin-left:auto;margin-right:auto;"></p>
+				<p id="aofaLightboxCaption"></p>
 				
 				<div id="aofaLightboxThumbs" class="aofa-lightbox-thumbs-strip"></div>
 			</div>
@@ -210,97 +281,241 @@ function aofa_render_photo_gallery_shortcode( $atts = array() ): string {
 	</div>
 
 	<style>
-	.aofa-lightbox-modal {
-		position: fixed;
-		top: 0; left: 0; width: 100vw; height: 100vh;
-		z-index: 99999;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	/* ── Photo Gallery Grid & Cards ── */
+	.aofa-gallery-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 1.75rem;
 	}
-	.aofa-lightbox-backdrop {
-		position: absolute;
-		top: 0; left: 0; width: 100%; height: 100%;
-		background: rgba(0, 25, 48, 0.92);
-		backdrop-filter: blur(8px);
-	}
-	.aofa-lightbox-content {
-		position: relative;
-		z-index: 10;
-		width: 92%;
-		max-width: 1050px;
-		max-height: 90vh;
+	.aofa-gallery-item {
+		background: #ffffff;
+		border-radius: 10px;
+		overflow: hidden;
+		box-shadow: 0 6px 18px -4px rgba(0,43,73,0.07);
+		border: 1px solid #E2E8F0;
+		transition: all 0.3s ease;
 		display: flex;
 		flex-direction: column;
+	}
+	.aofa-gallery-item:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 16px 28px -8px rgba(0,43,73,0.14);
+		border-color: #C5A059;
+	}
+	.aofa-gallery-img-wrapper {
+		position: relative;
+		height: 180px !important;
+		width: 100% !important;
+		overflow: hidden;
+		background-color: #001930;
+	}
+	.aofa-gallery-img-wrapper img {
+		width: 100% !important;
+		height: 180px !important;
+		object-fit: cover !important;
+		display: block;
+		transition: transform 0.4s ease;
+	}
+	.aofa-gallery-item:hover .aofa-gallery-img-wrapper img {
+		transform: scale(1.05);
+	}
+	.aofa-photo-count-badge {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		background: rgba(0, 43, 73, 0.88);
+		color: #C5A059;
+		padding: 3px 10px;
+		border-radius: 4px;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.3px;
+		display: flex;
 		align-items: center;
+		gap: 4px;
+		backdrop-filter: blur(4px);
+		border: 1px solid rgba(197, 160, 89, 0.3);
+	}
+	.aofa-gallery-caption {
+		padding: 1.25rem;
+		background: #ffffff;
+		flex: 1;
+	}
+	.aofa-gallery-title {
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: #002B49;
+		margin: 0 0 0.35rem 0;
+		line-height: 1.35;
+	}
+	.aofa-gallery-desc {
+		font-size: 0.9rem;
+		color: #64748B;
+		margin: 0;
+		line-height: 1.5;
+	}
+	.aofa-badge {
+		display: inline-block;
+		background: #F1F5F9;
+		color: #002B49;
+		font-size: 0.72rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		padding: 3px 8px;
+		border-radius: 4px;
+		border-left: 3px solid #C5A059;
+		margin-bottom: 0.5rem;
+	}
+
+	/* ── Lightbox Modal Slider Overlay (Append-to-body) ── */
+	.aofa-lightbox-modal {
+		position: fixed !important;
+		top: 0 !important;
+		left: 0 !important;
+		right: 0 !important;
+		bottom: 0 !important;
+		width: 100vw !important;
+		height: 100vh !important;
+		z-index: 999999 !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+	}
+	.aofa-lightbox-backdrop {
+		position: absolute !important;
+		top: 0 !important;
+		left: 0 !important;
+		width: 100% !important;
+		height: 100% !important;
+		background: rgba(4, 18, 33, 0.96) !important;
+		backdrop-filter: blur(10px);
+	}
+	.aofa-lightbox-content {
+		position: relative !important;
+		z-index: 10 !important;
+		width: 90% !important;
+		max-width: 900px !important;
+		max-height: 90vh !important;
+		display: flex !important;
+		flex-direction: column !important;
+		align-items: center !important;
+		margin: auto !important;
 	}
 	.aofa-lightbox-close {
-		position: absolute;
-		top: -45px; right: 0;
-		background: transparent;
-		color: #ffffff;
-		border: none;
-		font-size: 2.2rem;
-		cursor: pointer;
-		line-height: 1;
-		transition: color 0.2s ease;
+		position: fixed !important;
+		top: 20px !important;
+		right: 30px !important;
+		background: rgba(255,255,255,0.1) !important;
+		color: #ffffff !important;
+		border: 1px solid rgba(255,255,255,0.2) !important;
+		width: 44px !important;
+		height: 44px !important;
+		border-radius: 50% !important;
+		font-size: 1.8rem !important;
+		cursor: pointer !important;
+		line-height: 1 !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		transition: all 0.25s ease !important;
+		z-index: 1000000 !important;
 	}
-	.aofa-lightbox-close:hover { color: #C5A059; }
+	.aofa-lightbox-close:hover {
+		background: #C5A059 !important;
+		color: #002B49 !important;
+		border-color: #C5A059 !important;
+	}
 	.aofa-lightbox-arrow {
-		position: absolute;
-		top: 50%; transform: translateY(-50%);
-		background: rgba(0,43,73,0.8);
-		color: #C5A059;
-		border: 1px solid #C5A059;
-		width: 50px; height: 50px;
-		border-radius: 50%;
-		font-size: 1.5rem;
-		display: flex; align-items: center; justify-content: center;
-		cursor: pointer;
-		transition: all 0.3s ease;
-		z-index: 20;
+		position: absolute !important;
+		top: 50% !important;
+		transform: translateY(-50%) !important;
+		background: rgba(0, 43, 73, 0.85) !important;
+		color: #C5A059 !important;
+		border: 1px solid #C5A059 !important;
+		width: 48px !important;
+		height: 48px !important;
+		border-radius: 50% !important;
+		font-size: 1.4rem !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		cursor: pointer !important;
+		transition: all 0.25s ease !important;
+		z-index: 20 !important;
 	}
 	.aofa-lightbox-arrow:hover {
-		background: #C5A059;
-		color: #002B49;
+		background: #C5A059 !important;
+		color: #002B49 !important;
 	}
-	.aofa-lightbox-prev { left: -25px; }
-	.aofa-lightbox-next { right: -25px; }
+	.aofa-lightbox-prev { left: -24px !important; }
+	.aofa-lightbox-next { right: -24px !important; }
+
+	.aofa-lightbox-header-info {
+		text-align: center;
+		margin-bottom: 8px;
+	}
+	.aofa-lightbox-header-info h3 {
+		color: #ffffff !important;
+		margin: 0 0 4px !important;
+		font-size: 1.25rem !important;
+		font-weight: 700 !important;
+	}
+	.aofa-lightbox-header-info span {
+		color: #C5A059 !important;
+		font-size: 0.85rem !important;
+		font-weight: 600 !important;
+		letter-spacing: 0.5px;
+	}
+
 	.aofa-lightbox-body {
 		width: 100%;
 		text-align: center;
 	}
 	.aofa-lightbox-main-stage {
-		max-height: 60vh;
+		max-height: 58vh;
+		width: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin: 15px 0;
+		margin: 10px 0;
 	}
 	.aofa-lightbox-main-stage img {
-		max-width: 100%;
-		max-height: 60vh;
-		object-fit: contain;
+		max-width: 100% !important;
+		max-height: 56vh !important;
+		width: auto !important;
+		height: auto !important;
+		object-fit: contain !important;
 		border-radius: 8px;
-		box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-		border: 1px solid rgba(197,160,89,0.3);
+		box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+		border: 1px solid rgba(197, 160, 89, 0.35);
+	}
+	#aofaLightboxCaption {
+		color: #CBD5E1 !important;
+		font-size: 0.92rem !important;
+		margin: 10px auto 0 !important;
+		text-align: center !important;
+		max-width: 750px !important;
+		line-height: 1.5 !important;
 	}
 	.aofa-lightbox-thumbs-strip {
 		display: flex;
 		gap: 8px;
 		justify-content: center;
-		margin-top: 15px;
+		margin-top: 12px;
 		overflow-x: auto;
-		padding-bottom: 5px;
+		padding-bottom: 4px;
 	}
 	.aofa-lightbox-thumb-item {
-		width: 60px; height: 60px;
-		border-radius: 4px;
+		width: 54px;
+		height: 54px;
+		border-radius: 6px;
 		overflow: hidden;
-		opacity: 0.6;
+		opacity: 0.55;
 		cursor: pointer;
 		border: 2px solid transparent;
 		transition: all 0.25s ease;
+		flex-shrink: 0;
 	}
 	.aofa-lightbox-thumb-item.active,
 	.aofa-lightbox-thumb-item:hover {
@@ -308,7 +523,9 @@ function aofa_render_photo_gallery_shortcode( $atts = array() ): string {
 		border-color: #C5A059;
 	}
 	.aofa-lightbox-thumb-item img {
-		width: 100%; height: 100%; object-fit: cover;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 	</style>
 
@@ -321,13 +538,22 @@ function aofa_render_photo_gallery_shortcode( $atts = array() ): string {
 		if (!aofaAlbums[albumIndex]) return;
 		activeAlbumIdx = albumIndex;
 		activePhotoIdx = 0;
+		
+		var modal = document.getElementById('aofaLightboxModal');
+		if (modal && modal.parentElement !== document.body) {
+			document.body.appendChild(modal);
+		}
+
 		renderAofaLightboxPhoto();
-		document.getElementById('aofaLightboxModal').style.display = 'flex';
+		modal.style.display = 'flex';
 		document.body.style.overflow = 'hidden';
 	}
 
 	function closeAofaLightbox() {
-		document.getElementById('aofaLightboxModal').style.display = 'none';
+		var modal = document.getElementById('aofaLightboxModal');
+		if (modal) {
+			modal.style.display = 'none';
+		}
 		document.body.style.overflow = '';
 	}
 
@@ -357,17 +583,37 @@ function aofa_render_photo_gallery_shortcode( $atts = array() ): string {
 		document.getElementById('aofaLightboxTitle').innerText = decodeHtml(album.title);
 		document.getElementById('aofaLightboxCounter').innerText = 'Photo ' + (activePhotoIdx + 1) + ' of ' + album.photos.length;
 		document.getElementById('aofaLightboxImg').src = photo.url;
-		document.getElementById('aofaLightboxCaption').innerText = decodeHtml(album.excerpt);
+		
+		// Caption handling
+		var capText = photo.caption ? photo.caption : album.excerpt;
+		document.getElementById('aofaLightboxCaption').innerText = decodeHtml(capText);
 
+		// Hide navigation arrows if only 1 photo in album
+		var prevBtn = document.getElementById('aofaLightboxPrevBtn');
+		var nextBtn = document.getElementById('aofaLightboxNextBtn');
+		if (album.photos.length <= 1) {
+			if (prevBtn) prevBtn.style.display = 'none';
+			if (nextBtn) nextBtn.style.display = 'none';
+		} else {
+			if (prevBtn) prevBtn.style.display = 'flex';
+			if (nextBtn) nextBtn.style.display = 'flex';
+		}
+
+		// Thumbnails strip
 		var thumbsContainer = document.getElementById('aofaLightboxThumbs');
 		thumbsContainer.innerHTML = '';
-		album.photos.forEach(function(pt, pIdx){
-			var div = document.createElement('div');
-			div.className = 'aofa-lightbox-thumb-item' + (pIdx === activePhotoIdx ? ' active' : '');
-			div.onclick = function() { setAofaLightboxPhoto(pIdx); };
-			div.innerHTML = '<img src="' + pt.url + '" alt=""/>';
-			thumbsContainer.appendChild(div);
-		});
+		if (album.photos.length > 1) {
+			thumbsContainer.style.display = 'flex';
+			album.photos.forEach(function(pt, pIdx){
+				var div = document.createElement('div');
+				div.className = 'aofa-lightbox-thumb-item' + (pIdx === activePhotoIdx ? ' active' : '');
+				div.onclick = function() { setAofaLightboxPhoto(pIdx); };
+				div.innerHTML = '<img src="' + pt.url + '" alt=""/>';
+				thumbsContainer.appendChild(div);
+			});
+		} else {
+			thumbsContainer.style.display = 'none';
+		}
 	}
 
 	document.addEventListener('keydown', function(e) {
