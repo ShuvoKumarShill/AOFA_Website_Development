@@ -33,6 +33,7 @@ class Aofa_Post_Types {
 	public static function register(): void {
 		self::register_notice();
 		self::register_article();
+		self::register_gallery();
 	}
 
 	// ── aofa_notice ──────────────────────────────────────────────────────────
@@ -124,5 +125,49 @@ class Aofa_Post_Types {
 		);
 
 		register_post_type( 'aofa_article', $args );
+	}
+
+	// ── aofa_gallery ─────────────────────────────────────────────────────────
+
+	/**
+	 * Photo Gallery & Diplomatic Events.
+	 *
+	 * Allows users to upload and manage gallery photos from WP Admin.
+	 *
+	 * @since 1.0.0
+	 */
+	private static function register_gallery(): void {
+		$labels = array(
+			'name'               => _x( 'Photo Gallery', 'Post type general name', 'aofa-core' ),
+			'singular_name'      => _x( 'Gallery Photo', 'Post type singular name', 'aofa-core' ),
+			'menu_name'          => _x( 'Photo Gallery', 'Admin Menu text', 'aofa-core' ),
+			'add_new'            => __( 'Add New Photo', 'aofa-core' ),
+			'add_new_item'       => __( 'Add New Gallery Photo', 'aofa-core' ),
+			'edit_item'          => __( 'Edit Gallery Photo', 'aofa-core' ),
+			'view_item'          => __( 'View Photo', 'aofa-core' ),
+			'all_items'          => __( 'All Photos', 'aofa-core' ),
+			'search_items'       => __( 'Search Photos', 'aofa-core' ),
+			'not_found'          => __( 'No photos found.', 'aofa-core' ),
+			'not_found_in_trash' => __( 'No photos found in Trash.', 'aofa-core' ),
+		);
+
+		$args = array(
+			'labels'             => $labels,
+			'public'             => true,
+			'publicly_queryable' => true,
+			'show_ui'            => true,
+			'show_in_menu'       => true,
+			'query_var'          => true,
+			'rewrite'            => array( 'slug' => 'gallery' ),
+			'capability_type'    => 'post',
+			'has_archive'        => 'gallery',
+			'hierarchical'       => false,
+			'menu_position'      => 9,
+			'menu_icon'          => 'dashicons-format-gallery',
+			'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+			'show_in_rest'       => true,
+		);
+
+		register_post_type( 'aofa_gallery', $args );
 	}
 }
