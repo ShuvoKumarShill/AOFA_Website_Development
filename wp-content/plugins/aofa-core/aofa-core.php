@@ -106,20 +106,62 @@ add_action( 'wp_head', function() {
 			box-shadow: 0 10px 25px rgba(0, 43, 73, 0.12) !important;
 		}
 
-		/* ── Query Loop Cards Uniform Proportions ── */
-		.wp-block-query .wp-block-post-template {
+		/* ── Query Loop Cards Grid & Item Fixes ── */
+		ul.wp-block-post-template,
+		.wp-block-query-loop,
+		.wp-block-post-template.is-flex-container {
 			display: grid !important;
-			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+			grid-template-columns: repeat(3, 1fr) !important;
 			gap: 1.75rem !important;
+			margin: 0 !important;
+			padding: 0 !important;
+			list-style: none !important;
+			width: 100% !important;
 		}
-		.wp-block-query .wp-block-group.has-white-background-color {
+
+		@media (max-width: 900px) {
+			ul.wp-block-post-template,
+			.wp-block-post-template.is-flex-container {
+				grid-template-columns: repeat(2, 1fr) !important;
+			}
+		}
+
+		@media (max-width: 600px) {
+			ul.wp-block-post-template,
+			.wp-block-post-template.is-flex-container {
+				grid-template-columns: 1fr !important;
+			}
+		}
+
+		ul.wp-block-post-template > li,
+		.wp-block-post-template.is-flex-container > li.wp-block-post,
+		.wp-block-post {
+			width: 100% !important;
+			max-width: 100% !important;
+			min-width: 0 !important;
+			margin: 0 !important;
+			box-sizing: border-box !important;
+			display: flex !important;
+			flex-direction: column !important;
+		}
+
+		.wp-block-post > div,
+		.wp-block-group.has-white-background-color {
+			width: 100% !important;
+			box-sizing: border-box !important;
+			flex: 1 !important;
+			display: flex !important;
+			flex-direction: column !important;
+			justify-content: space-between !important;
 			border-radius: 10px !important;
 			border: 1px solid #E2E8F0 !important;
 			transition: all 0.3s ease !important;
 			background: #ffffff !important;
 			box-shadow: 0 4px 14px rgba(0, 43, 73, 0.05) !important;
 		}
-		.wp-block-query .wp-block-group.has-white-background-color:hover {
+
+		.wp-block-post > div:hover,
+		.wp-block-group.has-white-background-color:hover {
 			transform: translateY(-4px) !important;
 			box-shadow: 0 14px 24px -6px rgba(0, 43, 73, 0.12) !important;
 			border-color: #C5A059 !important;
@@ -141,6 +183,22 @@ add_action( 'wp_head', function() {
 	</style>
 	<?php
 }, 999 );
+
+/**
+ * Clean up raw markdown formatting in post excerpts (e.g. **bold**, *italic*, [links]).
+ */
+add_filter( 'get_the_excerpt', function( $excerpt, $post = null ) {
+	if ( ! empty( $excerpt ) ) {
+		// Remove markdown bold/italic asterisks & underscores
+		$excerpt = preg_replace( '/[\*_]{1,3}([^\*_]+)[\*_]{1,3}/', '$1', $excerpt );
+		// Remove markdown links [Text](url)
+		$excerpt = preg_replace( '/\[([^\]]+)\]\([^\)]+\)/', '$1', $excerpt );
+		// Remove remaining orphaned brackets and asterisks
+		$excerpt = str_replace( array( '[', ']', '**', '*' ), '', $excerpt );
+		$excerpt = trim( $excerpt );
+	}
+	return $excerpt;
+}, 10, 2 );
 
 // ── Meta Boxes ───────────────────────────────────────────────────────────────
 
