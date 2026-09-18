@@ -378,9 +378,12 @@ function aofa_render_photo_gallery_shortcode( $atts = array() ): string {
 		width: 100vw !important;
 		height: 100vh !important;
 		z-index: 999999 !important;
-		display: flex !important;
+		display: none !important;
 		align-items: center !important;
 		justify-content: center !important;
+	}
+	.aofa-lightbox-modal.is-open {
+		display: flex !important;
 	}
 	.aofa-lightbox-backdrop {
 		position: absolute !important;
@@ -545,14 +548,16 @@ function aofa_render_photo_gallery_shortcode( $atts = array() ): string {
 		}
 
 		renderAofaLightboxPhoto();
-		modal.style.display = 'flex';
+		if (modal) {
+			modal.classList.add('is-open');
+		}
 		document.body.style.overflow = 'hidden';
 	}
 
 	function closeAofaLightbox() {
 		var modal = document.getElementById('aofaLightboxModal');
 		if (modal) {
-			modal.style.display = 'none';
+			modal.classList.remove('is-open');
 		}
 		document.body.style.overflow = '';
 	}
@@ -618,7 +623,7 @@ function aofa_render_photo_gallery_shortcode( $atts = array() ): string {
 
 	document.addEventListener('keydown', function(e) {
 		var modal = document.getElementById('aofaLightboxModal');
-		if (modal && modal.style.display === 'flex') {
+		if (modal && modal.classList.contains('is-open')) {
 			if (e.key === 'Escape') closeAofaLightbox();
 			if (e.key === 'ArrowLeft') changeAofaLightboxPhoto(-1);
 			if (e.key === 'ArrowRight') changeAofaLightboxPhoto(1);
