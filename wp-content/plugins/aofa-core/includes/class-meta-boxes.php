@@ -36,6 +36,16 @@ class Aofa_Meta_Boxes {
 			'normal',
 			'high'
 		);
+
+		// ── Photo Gallery meta (Multiple Photos) ──────────────────────────────
+		add_meta_box(
+			'aofa_gallery_photos',
+			__( 'Gallery Album Photos (Upload Multiple)', 'aofa-core' ),
+			array( self::class, 'render_gallery_meta_box' ),
+			'aofa_gallery',
+			'normal',
+			'high'
+		);
 	}
 
 	// ── Article Meta Box ──────────────────────────────────────────────────────
@@ -113,6 +123,116 @@ class Aofa_Meta_Boxes {
 
 		self::save_fields( $post_id, $fields );
 		update_post_meta( $post_id, '_aofa_language', $language );
+	}
+
+	// ── Gallery Meta Box ──────────────────────────────────────────────────────
+
+	/**
+	 * Render the Gallery Album Photos (Multiple Image Upload) meta box.
+	 *
+	 * @param WP_Post $post The current post object.
+	 */
+	public static function render_gallery_meta_box( WP_Post $post ): void {
+		wp_nonce_field( 'aofa_save_gallery_meta', 'aofa_gallery_meta_nonce' );
+
+		$gallery_ids = get_post_meta( $post->ID, '_aofa_gallery_ids', true );
+		$ids_array   = ! empty( $gallery_ids ) ? array_map( 'intval', explode( ',', $gallery_ids ) ) : array();
+		?>
+		<div class="aofa-gallery-meta-wrapper">
+			<p class="description">
+				<?php esc_html_e( 'Click the button below to upload or select multiple photos for this gallery album at once.', 'aofa-core' ); ?>
+			</p>
+
+			<div id="aofa_gallery_container" style="display:flex;flex-wrap:wrap;gap:12px;margin:15px 0;">
+				<?php
+				if ( ! empty( $ids_array ) ) {
+					foreach ( $ids_array as $img_id ) {
+						$thumb = wp_get_attachment_image_url( $img_id, 'thumbnail' );
+						if ( $thumb ) {
+							echo '<div class="aofa-gallery-thumb" data-id="' . esc_attr( $img_id ) . '" style="position:relative;width:90px;height:90px;border-radius:6px;overflow:hidden;border:1px solid #CBD5E1;">';
+							echo '<img src="' . esc_url( $thumb ) . '" style="width:100%;height:100%;object-fit:cover;"/>';
+							echo '<button type="button" class="aofa-remove-thumb" style="position:absolute;top:2px;right:2px;background:#EF4444;color:#fff;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:11px;line-height:1;">&times;</button>';
+							echo '</div>';
+						}
+					}
+				}
+				?>
+			</div>
+
+			<input type="hidden" id="aofa_gallery_ids" name="aofa_gallery_ids" value="<?php echo esc_attr( $gallery_ids ); ?>" />
+			<button type="button" class="button button-primary button-large" id="aofa_upload_gallery_btn">
+				<span class="dashicons dashicons-images-alt2" style="vertical-align:middle;margin-right:5px;"></span>
+				<?php esc_html_e( 'Select / Upload Multiple Photos', 'aofa-core' ); ?>
+			</button>
+		</div>
+
+		<script>
+		jQuery(document).ready(function($){
+			var frame;
+			$('#aofa_upload_gallery_btn').on('click', function(e){
+				e.preventDefault();
+				if (frame) {
+					frame.open();
+					return;
+				}
+				frame = wp.media({
+					title: 'Select or Upload Gallery Photos',
+					button: { text: 'Add Photos to Gallery' },
+					multiple: true
+				});
+
+				frame.on('select', function(){
+					var selection = frame.state().get('selection');
+					var currentIds = $('#aofa_gallery_ids').val() ? $('#aofa_gallery_ids').val().split(',') : [];
+
+					selection.map(function(attachment){
+						attachment = attachment.toJSON();
+						if (currentIds.indexOf(attachment.id.toString()) === -1) {
+							currentIds.push(attachment.id);
+							var thumbUrl = attachment.sizes && attachment.sizes.thumbnail ? attachment.sizes.thumbnail.url : attachment.url;
+							var html = '<div class="aofa-gallery-thumb" data-id="' + attachment.id + '" style="position:relative;width:90px;height:90px;border-radius:6px;overflow:hidden;border:1px solid #CBD5E1;">' +
+								'<img src="' + thumbUrl + '" style="width:100%;height:100%;object-fit:cover;"/>' +
+								'<button type="button" class="aofa-remove-thumb" style="position:absolute;top:2px;right:2px;background:#EF4444;color:#fff;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:11px;line-height:1;">&times;</button>' +
+								'</div>';
+							$('#aofa_gallery_container').append(html);
+						}
+					});
+
+					$('#aofa_gallery_ids').val(currentIds.join(','));
+				});
+
+				frame.open();
+			});
+
+			$(document).on('click', '.aofa-remove-thumb', function(){
+				var parent = $(this).closest('.aofa-gallery-thumb');
+				var id = parent.data('id').toString();
+				parent.remove();
+
+				var ids = $('#aofa_gallery_ids').val().split(',');
+				var index = ids.indexOf(id);
+				if (index > -1) {
+					ids.splice(index, 1);
+				}
+				$('#aofa_gallery_ids').val(ids.join(','));
+			});
+		});
+		</script>
+		<?php
+	}
+
+	/**
+	 * Save Gallery meta on post save.
+	 *
+	 * @param int $post_id The ID of the post being saved.
+	 */
+	public static function save_gallery_meta( int $post_id ): void {
+		if ( ! self::can_save( $post_id, 'aofa_save_gallery_meta', 'aofa_gallery_meta_nonce' ) ) {
+			return;
+		}
+
+		$ids = isset( $_POST['aofa_gallery_ids'] ) ? sanitize_text_field( wp_unslash( $_POST['aofa_gallery_ids'] ) ) : '';
+		update_post_meta( $post_id, '_aofa_gallery_ids', $ids );
 	}
 
 	// ── Shared Helpers ────────────────────────────────────────────────────────

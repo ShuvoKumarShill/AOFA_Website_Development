@@ -79,6 +79,17 @@ add_action( 'add_meta_boxes', array( 'Aofa_Meta_Boxes', 'register' ) );
 /** Save Article meta. */
 add_action( 'save_post_aofa_article', array( 'Aofa_Meta_Boxes', 'save_article_meta' ) );
 
+/** Save Gallery meta. */
+add_action( 'save_post_aofa_gallery', array( 'Aofa_Meta_Boxes', 'save_gallery_meta' ) );
+
+/** Enqueue WordPress media scripts in admin for photo gallery post type. */
+add_action( 'admin_enqueue_scripts', function( $hook ) {
+	global $post_type;
+	if ( 'aofa_gallery' === $post_type ) {
+		wp_enqueue_media();
+	}
+} );
+
 /**
  * Enable Custom Post Types in Gutenberg Query Loop blocks on the front page and custom templates.
  */
