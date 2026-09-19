@@ -1085,25 +1085,72 @@ function aofa_render_executive_diplomatic_footer(): void {
 add_action( 'wp_footer', 'aofa_render_executive_diplomatic_footer', 999 );
 
 /**
+ * Register Announcement Ticker Custom Setting in WP Admin -> Settings -> General.
+ */
+add_action( 'admin_init', function() {
+	register_setting( 'general', 'aofa_ticker_custom_text', array(
+		'type'              => 'string',
+		'sanitize_callback' => 'sanitize_text_field',
+		'default'           => '',
+	) );
+
+	add_settings_field(
+		'aofa_ticker_custom_text',
+		__( 'AOFA Official Bulletin Ticker Override', 'aofa-core' ),
+		function() {
+			$value = get_option( 'aofa_ticker_custom_text', '' );
+			echo '<input type="text" name="aofa_ticker_custom_text" value="' . esc_attr( $value ) . '" class="regular-text" placeholder="Leave empty to auto-show latest Notice title" />';
+			echo '<p class="description">' . esc_html__( 'If left empty, the Live Ticker automatically displays the latest published Notice title from WP Admin -> Notices.', 'aofa-core' ) . '</p>';
+		},
+		'general'
+	);
+} );
+
+/**
  * Dynamic First Screen Enhancements (Auto-slider, Crest Pulse, Announcement Ticker, Animated Counters).
  */
 function aofa_first_screen_dynamic_enhancements(): void {
 	if ( ! is_front_page() && ! is_home() ) {
 		return;
 	}
+
+	// Dynamic Notice Fetching for Ticker Bar
+	$custom_ticker = get_option( 'aofa_ticker_custom_text', '' );
+	if ( ! empty( $custom_ticker ) ) {
+		$ticker_title = esc_html( $custom_ticker );
+		$ticker_url   = home_url( '/notice' );
+	} else {
+		$latest_notices = get_posts( array(
+			'post_type'      => 'aofa_notice',
+			'posts_per_page' => 1,
+			'post_status'    => 'publish',
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		) );
+		if ( ! empty( $latest_notices ) ) {
+			$ticker_title = esc_html( get_the_title( $latest_notices[0] ) );
+			$ticker_url   = esc_url( get_permalink( $latest_notices[0] ) );
+		} else {
+			$ticker_title = 'Extraordinary General Meeting (EGM) Notice & Annual Subscription Update';
+			$ticker_url   = home_url( '/notice' );
+		}
+	}
 	?>
 	<script id="aofa-first-screen-js">
 	(function() {
 		'use strict';
 
+		var tickerTitle = <?php echo wp_json_encode( $ticker_title ); ?>;
+		var tickerUrl   = <?php echo wp_json_encode( $ticker_url ); ?>;
+
 		document.addEventListener('DOMContentLoaded', function() {
 
-			// ── 1. Live Diplomatic Announcement Ticker ──
+			// ── 1. Live Diplomatic Announcement Ticker (Dynamically Fetched from Backend) ──
 			if (!document.querySelector('.aofa-ticker-wrap')) {
 				var tickerBar = document.createElement('div');
 				tickerBar.className = 'aofa-ticker-wrap';
 				tickerBar.innerHTML = '<span class="aofa-ticker-badge"><span class="aofa-pulse-dot"></span> OFFICIAL BULLETIN</span>' +
-					'<span class="aofa-ticker-text"><a href="/notice">Extraordinary General Meeting (EGM) Notice & Annual Subscription Update &mdash; Read Official Notices &rarr;</a></span>';
+					'<span class="aofa-ticker-text"><a href="' + tickerUrl + '">' + tickerTitle + ' &mdash; Read Notice &rarr;</a></span>';
 				
 				var headerEl = document.querySelector('.site-header') || document.querySelector('.aofa-site-header') || document.querySelector('header');
 				if (headerEl && headerEl.parentNode) {
