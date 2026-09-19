@@ -318,6 +318,188 @@ add_action( 'wp_head', function() {
 }, 999 );
 
 /**
+ * Inject directory table CSS (works with any active theme including Astra).
+ */
+add_action( 'wp_head', function() {
+	?>
+	<style id="aofa-directory-styles">
+		/* ── Member & EC Directory Table Controls ── */
+		.aofa-dir-controls {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+			align-items: center;
+			justify-content: space-between;
+			background: #f8f9fa;
+			border: 1px solid #e2e8f0;
+			border-radius: 8px;
+			padding: 1rem 1.25rem;
+			margin-bottom: 1.5rem;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+		}
+		.aofa-dir-search-wrap {
+			flex: 1;
+			min-width: 260px;
+		}
+		.aofa-dir-search {
+			width: 100%;
+			padding: 10px 14px;
+			font-size: 14px;
+			font-family: inherit;
+			border: 1px solid #cbd5e1;
+			border-radius: 6px;
+			background: #ffffff;
+			color: #1e293b;
+			transition: border-color 0.2s ease, box-shadow 0.2s ease;
+			box-sizing: border-box;
+			outline: none;
+		}
+		.aofa-dir-search:focus {
+			border-color: #002B49;
+			box-shadow: 0 0 0 3px rgba(0, 43, 73, 0.12);
+		}
+		.aofa-dir-tabs {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 6px;
+		}
+		.aofa-dir-tab {
+			padding: 7px 15px;
+			font-size: 13px;
+			font-family: inherit;
+			font-weight: 600;
+			border: 1px solid #cbd5e1;
+			background: #ffffff;
+			color: #1e293b;
+			border-radius: 20px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			display: inline-flex;
+			align-items: center;
+			gap: 5px;
+			line-height: 1.4;
+		}
+		.aofa-dir-tab:hover {
+			background: #f1f5f9;
+			border-color: #002B49;
+		}
+		.aofa-dir-tab.active {
+			background: #002B49;
+			color: #ffffff;
+			border-color: #002B49;
+		}
+		.aofa-tab-count {
+			display: inline-block;
+			background: rgba(255,255,255,0.25);
+			color: inherit;
+			font-size: 11px;
+			font-weight: 700;
+			border-radius: 10px;
+			padding: 1px 7px;
+			min-width: 20px;
+			text-align: center;
+		}
+		.aofa-dir-tab:not(.active) .aofa-tab-count {
+			background: #e2e8f0;
+			color: #64748b;
+		}
+
+		/* ── Data Table Styling ── */
+		.aofa-members-table-wrapper .aofa-data-table,
+		.aofa-ec-table-wrapper .aofa-data-table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 0.9rem;
+		}
+		.aofa-members-table-wrapper .aofa-data-table th,
+		.aofa-ec-table-wrapper .aofa-data-table th {
+			background: #002B49;
+			color: #ffffff;
+			padding: 0.75rem 1rem;
+			text-align: left;
+			font-weight: 600;
+			letter-spacing: 0.03em;
+			white-space: nowrap;
+		}
+		.aofa-members-table-wrapper .aofa-data-table td,
+		.aofa-ec-table-wrapper .aofa-data-table td {
+			padding: 0.65rem 1rem;
+			border-bottom: 1px solid #e2e8f0;
+			vertical-align: top;
+			color: #1e293b;
+		}
+		.aofa-members-table-wrapper .aofa-data-table tr:nth-child(even) td,
+		.aofa-ec-table-wrapper .aofa-data-table tr:nth-child(even) td {
+			background: #f8fafc;
+		}
+		.aofa-members-table-wrapper .aofa-data-table tr:hover td,
+		.aofa-ec-table-wrapper .aofa-data-table tr:hover td {
+			background: rgba(197, 160, 89, 0.07);
+		}
+		.aofa-data-table-wrapper {
+			overflow-x: auto;
+			-webkit-overflow-scrolling: touch;
+			border-radius: 6px;
+			border: 1px solid #e2e8f0;
+		}
+
+		/* ── Member type badges ── */
+		.aofa-member-type-badge {
+			display: inline-block;
+			font-size: 0.7rem;
+			font-weight: 700;
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+			padding: 2px 8px;
+			border-radius: 12px;
+			background: #002B49;
+			color: #ffffff;
+		}
+		.aofa-member-type-badge.honorary {
+			background: #C5A059;
+			color: #002B49;
+		}
+
+		/* ── EC term headings ── */
+		.aofa-ec-term-heading {
+			margin: 2rem 0 0.75rem;
+			font-size: 1.2rem;
+			border-bottom: 2px solid #C5A059;
+			padding-bottom: 0.5rem;
+		}
+		.aofa-ec-term-badge {
+			display: inline-block;
+			background: #002B49;
+			color: #ffffff;
+			padding: 4px 14px;
+			border-radius: 4px;
+			font-size: 0.95rem;
+			font-weight: 700;
+		}
+
+		/* ── Result count ── */
+		.aofa-dir-result-count {
+			font-size: 0.82rem;
+			color: #64748b;
+			text-align: right;
+			margin-top: 0.5rem;
+			font-style: italic;
+		}
+
+		/* ── Mobile ── */
+		@media (max-width: 640px) {
+			.aofa-dir-controls {
+				flex-direction: column;
+				align-items: stretch;
+			}
+		}
+	</style>
+	<?php
+}, 999 );
+
+
+
+/**
  * Clean up raw markdown formatting in post excerpts (e.g. **bold**, *italic*, [links]).
  */
 add_filter( 'get_the_excerpt', function( $excerpt, $post = null ) {
@@ -836,16 +1018,361 @@ add_filter( 'query_loop_block_query_vars', function( $query_vars, $block ) {
 	if ( ! empty( $requested_type ) ) {
 		$query_vars['post_type']   = sanitize_text_field( $requested_type );
 		$query_vars['post_status'] = 'publish';
-		$query_vars['nopaging']    = false;
+		if ( in_array( $requested_type, array( 'aofa_member', 'aofa_ec_member' ), true ) ) {
+			$query_vars['posts_per_page'] = -1;
+			$query_vars['nopaging']       = true;
+		} else {
+			$query_vars['nopaging']    = false;
+		}
 		unset( $query_vars['page_id'], $query_vars['paged'] );
 	}
 
 	if ( is_object( $block ) && isset( $block->context['query']['perPage'] ) && ! empty( $block->context['query']['perPage'] ) ) {
-		$query_vars['posts_per_page'] = (int) $block->context['query']['perPage'];
+		if ( ! in_array( $requested_type, array( 'aofa_member', 'aofa_ec_member' ), true ) ) {
+			$query_vars['posts_per_page'] = (int) $block->context['query']['perPage'];
+		}
 	}
 
 	return $query_vars;
 }, 10, 2 );
+
+// ── [aofa_members_table] Shortcode ────────────────────────────────────────────
+
+/**
+ * Renders all AOFA Regular & Honorary Members as a single-page HTML table.
+ * Usage: [aofa_members_table]
+ *
+ * @return string HTML output.
+ */
+function aofa_render_members_table(): string {
+	$members = get_posts( array(
+		'post_type'      => 'aofa_member',
+		'posts_per_page' => -1,
+		'nopaging'       => true,
+		'post_status'    => 'publish',
+		'orderby'        => 'meta_value_num',
+		'meta_key'       => '_aofa_member_no',
+		'order'          => 'ASC',
+	) );
+
+	if ( empty( $members ) ) {
+		return '<p style="text-align:center;padding:40px;color:#64748B;">No member records found.</p>';
+	}
+
+	// Separate regular vs honorary
+	$regular   = array();
+	$honorary  = array();
+	foreach ( $members as $m ) {
+		$types = wp_get_post_terms( $m->ID, 'aofa_member_type', array( 'fields' => 'slugs' ) );
+		if ( in_array( 'honorary', $types, true ) ) {
+			$honorary[] = $m;
+		} else {
+			$regular[] = $m;
+		}
+	}
+	$total_regular  = count( $regular );
+	$total_honorary = count( $honorary );
+	$total          = $total_regular + $total_honorary;
+
+	ob_start();
+	?>
+	<div class="aofa-members-table-wrapper" id="aofa-members-table-wrapper">
+		<!-- Controls -->
+		<div class="aofa-dir-controls">
+			<div class="aofa-dir-search-wrap">
+				<input
+					type="text"
+					id="aofa-members-search"
+					class="aofa-dir-search"
+					placeholder="&#128269; Search by name, phone, email or address…"
+					aria-label="Search members"
+				/>
+			</div>
+			<div class="aofa-dir-tabs" role="tablist" aria-label="Filter by member type">
+				<button class="aofa-dir-tab active" data-filter="all"    role="tab" aria-selected="true">All Members <span class="aofa-tab-count"><?php echo esc_html( $total ); ?></span></button>
+				<button class="aofa-dir-tab"        data-filter="regular"  role="tab" aria-selected="false">Regular <span class="aofa-tab-count"><?php echo esc_html( $total_regular ); ?></span></button>
+				<button class="aofa-dir-tab"        data-filter="honorary" role="tab" aria-selected="false">Honorary <span class="aofa-tab-count"><?php echo esc_html( $total_honorary ); ?></span></button>
+			</div>
+		</div>
+
+		<!-- Table -->
+		<div class="aofa-data-table-wrapper" style="overflow-x:auto">
+			<table class="aofa-data-table" id="aofa-members-table" aria-label="AOFA Member Directory">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Name</th>
+						<th>Type</th>
+						<th>Phone</th>
+						<th>Email</th>
+						<th>Address</th>
+					</tr>
+				</thead>
+				<tbody id="aofa-members-tbody">
+				<?php foreach ( $members as $m ) :
+					$no      = get_post_meta( $m->ID, '_aofa_member_no', true );
+					$phone   = get_post_meta( $m->ID, '_aofa_phone', true );
+					$email   = get_post_meta( $m->ID, '_aofa_email', true );
+					$address = get_post_meta( $m->ID, '_aofa_address', true );
+					$types   = wp_get_post_terms( $m->ID, 'aofa_member_type', array( 'fields' => 'slugs' ) );
+					$type    = in_array( 'honorary', $types, true ) ? 'honorary' : 'regular';
+					$label   = 'honorary' === $type ? 'Honorary' : 'Regular';
+					$name    = get_the_title( $m->ID );
+				?>
+					<tr data-member-type="<?php echo esc_attr( $type ); ?>">
+						<td><?php echo esc_html( $no ?: '—' ); ?></td>
+						<td><?php echo esc_html( $name ); ?></td>
+						<td><span class="aofa-member-type-badge <?php echo esc_attr( $type ); ?>"><?php echo esc_html( $label ); ?></span></td>
+						<td><?php echo esc_html( $phone ?: '—' ); ?></td>
+						<td><?php echo $email ? '<a href="mailto:' . esc_attr( $email ) . '">' . esc_html( $email ) . '</a>' : '—'; ?></td>
+						<td><?php echo esc_html( $address ?: '—' ); ?></td>
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		<p class="aofa-dir-result-count" id="aofa-members-result-count" aria-live="polite"></p>
+	</div>
+
+	<script>
+	( function () {
+		'use strict';
+		var searchInput  = document.getElementById( 'aofa-members-search' );
+		var tabs         = document.querySelectorAll( '#aofa-members-table-wrapper .aofa-dir-tab' );
+		var rows         = document.querySelectorAll( '#aofa-members-tbody tr' );
+		var countEl      = document.getElementById( 'aofa-members-result-count' );
+		var activeFilter = 'all';
+
+		function updateCount( visible ) {
+			if ( countEl ) {
+				countEl.textContent = visible + ' member' + ( visible !== 1 ? 's' : '' ) + ' shown';
+			}
+		}
+
+		function applyFilters() {
+			var query   = searchInput ? searchInput.value.toLowerCase() : '';
+			var visible = 0;
+			rows.forEach( function ( row ) {
+				var type    = row.getAttribute( 'data-member-type' );
+				var text    = row.textContent.toLowerCase();
+				var matchT  = ( activeFilter === 'all' || type === activeFilter );
+				var matchS  = ( ! query || text.indexOf( query ) !== -1 );
+				if ( matchT && matchS ) {
+					row.style.display = '';
+					visible++;
+				} else {
+					row.style.display = 'none';
+				}
+			} );
+			updateCount( visible );
+		}
+
+		if ( searchInput ) {
+			searchInput.addEventListener( 'input', applyFilters );
+		}
+		tabs.forEach( function ( btn ) {
+			btn.addEventListener( 'click', function () {
+				tabs.forEach( function ( b ) { b.classList.remove( 'active' ); b.setAttribute( 'aria-selected', 'false' ); } );
+				btn.classList.add( 'active' );
+				btn.setAttribute( 'aria-selected', 'true' );
+				activeFilter = btn.getAttribute( 'data-filter' );
+				applyFilters();
+			} );
+		} );
+
+		applyFilters();
+	} )();
+	</script>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'aofa_members_table', 'aofa_render_members_table' );
+
+// ── [aofa_ec_table] Shortcode ─────────────────────────────────────────────────
+
+/**
+ * Renders all AOFA Executive Committee Members as a single-page HTML table,
+ * grouped by term with filter tabs.
+ * Usage: [aofa_ec_table]
+ *
+ * @return string HTML output.
+ */
+function aofa_render_ec_table(): string {
+	$ec_members = get_posts( array(
+		'post_type'      => 'aofa_ec_member',
+		'posts_per_page' => -1,
+		'nopaging'       => true,
+		'post_status'    => 'publish',
+		'orderby'        => 'meta_value_num',
+		'meta_key'       => '_aofa_ec_serial',
+		'order'          => 'ASC',
+	) );
+
+	if ( empty( $ec_members ) ) {
+		return '<p style="text-align:center;padding:40px;color:#64748B;">No Executive Committee records found.</p>';
+	}
+
+	// Group by term (from _aofa_ec_term meta or taxonomy)
+	$by_term = array();
+	foreach ( $ec_members as $m ) {
+		$term = get_post_meta( $m->ID, '_aofa_ec_term', true );
+		if ( ! $term ) {
+			$terms = wp_get_post_terms( $m->ID, 'aofa_committee_term', array( 'fields' => 'names' ) );
+			$term  = ! empty( $terms ) ? $terms[0] : 'Other';
+		}
+		$by_term[ $term ][] = $m;
+	}
+	// Sort terms newest first
+	krsort( $by_term );
+
+	$terms = array_keys( $by_term );
+	$total = count( $ec_members );
+
+	ob_start();
+	?>
+	<div class="aofa-ec-table-wrapper" id="aofa-ec-table-wrapper">
+		<!-- Controls -->
+		<div class="aofa-dir-controls">
+			<div class="aofa-dir-search-wrap">
+				<input
+					type="text"
+					id="aofa-ec-search"
+					class="aofa-dir-search"
+					placeholder="&#128269; Search by name or position…"
+					aria-label="Search EC members"
+				/>
+			</div>
+			<div class="aofa-dir-tabs" role="tablist" aria-label="Filter by committee term">
+				<button class="aofa-dir-tab active" data-ec-filter="all" role="tab" aria-selected="true">All Terms <span class="aofa-tab-count"><?php echo esc_html( $total ); ?></span></button>
+				<?php foreach ( $terms as $term_label ) : ?>
+				<button class="aofa-dir-tab" data-ec-filter="<?php echo esc_attr( $term_label ); ?>" role="tab" aria-selected="false">
+					EC <?php echo esc_html( $term_label ); ?>
+					<span class="aofa-tab-count"><?php echo esc_html( count( $by_term[ $term_label ] ) ); ?></span>
+				</button>
+				<?php endforeach; ?>
+			</div>
+		</div>
+
+		<!-- Tables per term -->
+		<?php foreach ( $by_term as $term_label => $members ) : ?>
+		<div class="aofa-ec-term-section" data-ec-term="<?php echo esc_attr( $term_label ); ?>">
+			<h3 class="aofa-ec-term-heading">
+				<span class="aofa-ec-term-badge">EC <?php echo esc_html( $term_label ); ?></span>
+			</h3>
+			<div class="aofa-data-table-wrapper" style="overflow-x:auto;margin-bottom:2rem">
+				<table class="aofa-data-table" aria-label="<?php echo esc_attr( 'EC ' . $term_label . ' Members' ); ?>">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							<th>Position</th>
+						</tr>
+					</thead>
+					<tbody class="aofa-ec-tbody">
+					<?php foreach ( $members as $m ) :
+						$serial   = get_post_meta( $m->ID, '_aofa_ec_serial', true );
+						$position = get_post_meta( $m->ID, '_aofa_ec_position', true );
+						$name     = get_the_title( $m->ID );
+					?>
+						<tr>
+							<td><?php echo esc_html( $serial ?: '—' ); ?></td>
+							<td><?php echo esc_html( $name ); ?></td>
+							<td><?php echo esc_html( $position ?: '—' ); ?></td>
+						</tr>
+					<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<?php endforeach; ?>
+
+		<p class="aofa-dir-result-count" id="aofa-ec-result-count" aria-live="polite"></p>
+	</div>
+
+	<script>
+	( function () {
+		'use strict';
+		var searchInput  = document.getElementById( 'aofa-ec-search' );
+		var tabs         = document.querySelectorAll( '#aofa-ec-table-wrapper .aofa-dir-tab' );
+		var sections     = document.querySelectorAll( '.aofa-ec-term-section' );
+		var countEl      = document.getElementById( 'aofa-ec-result-count' );
+		var activeFilter = 'all';
+
+		function updateCount( visible ) {
+			if ( countEl ) {
+				countEl.textContent = visible + ' member' + ( visible !== 1 ? 's' : '' ) + ' shown';
+			}
+		}
+
+		function applyFilters() {
+			var query   = searchInput ? searchInput.value.toLowerCase() : '';
+			var visible = 0;
+			sections.forEach( function ( section ) {
+				var term  = section.getAttribute( 'data-ec-term' );
+				var matchT = ( activeFilter === 'all' || activeFilter === term );
+				if ( ! matchT ) {
+					section.style.display = 'none';
+					return;
+				}
+				section.style.display = '';
+				// Row-level search within visible section
+				var rows = section.querySelectorAll( 'tbody tr' );
+				rows.forEach( function ( row ) {
+					var text  = row.textContent.toLowerCase();
+					var matchS = ( ! query || text.indexOf( query ) !== -1 );
+					if ( matchS ) {
+						row.style.display = '';
+						visible++;
+					} else {
+						row.style.display = 'none';
+					}
+				} );
+			} );
+			updateCount( visible );
+		}
+
+		if ( searchInput ) {
+			searchInput.addEventListener( 'input', applyFilters );
+		}
+		tabs.forEach( function ( btn ) {
+			btn.addEventListener( 'click', function () {
+				tabs.forEach( function ( b ) { b.classList.remove( 'active' ); b.setAttribute( 'aria-selected', 'false' ); } );
+				btn.classList.add( 'active' );
+				btn.setAttribute( 'aria-selected', 'true' );
+				activeFilter = btn.getAttribute( 'data-ec-filter' );
+				applyFilters();
+			} );
+		} );
+
+		applyFilters();
+	} )();
+	</script>
+	<?php
+	return ob_get_clean();
+}
+add_shortcode( 'aofa_ec_table', 'aofa_render_ec_table' );
+
+/**
+ * Override CPT archive templates for Members and Executive Committee.
+ * Intercepts the template_include filter so Astra renders our shortcode table
+ * instead of the default CPT archive post grid.
+ */
+add_filter( 'template_include', function( $template ) {
+	if ( is_post_type_archive( 'aofa_member' ) ) {
+		// Build a standalone template file path in the plugin
+		$custom = plugin_dir_path( __FILE__ ) . 'templates/archive-aofa_member.php';
+		if ( file_exists( $custom ) ) {
+			return $custom;
+		}
+	}
+	if ( is_post_type_archive( 'aofa_ec_member' ) ) {
+		$custom = plugin_dir_path( __FILE__ ) . 'templates/archive-aofa_ec_member.php';
+		if ( file_exists( $custom ) ) {
+			return $custom;
+		}
+	}
+	return $template;
+} );
 
 /**
  * Register WP-CLI commands after WP-CLI has loaded.
