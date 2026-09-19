@@ -180,6 +180,120 @@ add_action( 'wp_head', function() {
 			transform: translateY(-2px) !important;
 			box-shadow: 0 8px 18px rgba(0, 43, 73, 0.2) !important;
 		}
+
+		/* ── First Screen: Live Announcement Ticker ── */
+		.aofa-ticker-wrap {
+			background: linear-gradient(90deg, #001222 0%, #002B49 100%) !important;
+			border-bottom: 2px solid #C5A059 !important;
+			padding: 8px 20px !important;
+			color: #ffffff !important;
+			font-size: 0.85rem !important;
+			display: flex !important;
+			align-items: center !important;
+			justify-content: center !important;
+			gap: 14px !important;
+			box-shadow: 0 4px 16px rgba(0,0,0,0.2) !important;
+			z-index: 99 !important;
+			position: relative !important;
+		}
+		.aofa-ticker-badge {
+			background: #C5A059 !important;
+			color: #002B49 !important;
+			font-weight: 800 !important;
+			font-size: 0.72rem !important;
+			text-transform: uppercase !important;
+			letter-spacing: 0.08em !important;
+			padding: 3px 12px !important;
+			border-radius: 20px !important;
+			display: inline-flex !important;
+			align-items: center !important;
+			gap: 6px !important;
+			white-space: nowrap !important;
+			box-shadow: 0 2px 8px rgba(197, 160, 89, 0.4) !important;
+		}
+		.aofa-pulse-dot {
+			width: 8px;
+			height: 8px;
+			background-color: #EF4444;
+			border-radius: 50%;
+			display: inline-block;
+			animation: aofaPulseDot 1.4s infinite ease-in-out;
+		}
+		@keyframes aofaPulseDot {
+			0% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+			50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+			100% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+		}
+		.aofa-ticker-text {
+			color: rgba(255, 255, 255, 0.92) !important;
+			font-weight: 500 !important;
+			overflow: hidden !important;
+			text-overflow: ellipsis !important;
+			white-space: nowrap !important;
+		}
+		.aofa-ticker-text a {
+			color: #C5A059 !important;
+			text-decoration: none !important;
+			font-weight: 600 !important;
+			transition: color 0.2s ease !important;
+		}
+		.aofa-ticker-text a:hover {
+			color: #ffffff !important;
+			text-decoration: underline !important;
+		}
+
+		/* ── First Screen: Crest Pulse & Glow Animation ── */
+		.aofa-hero-crest-img,
+		figure.wp-block-image img[src*="aofa-crest"],
+		.wp-block-column img[src*="aofa-crest"],
+		.aofa-hero-slide img {
+			animation: aofaCrestGlow 4s infinite ease-in-out !important;
+			transition: all 0.4s ease !important;
+		}
+		@keyframes aofaCrestGlow {
+			0% { filter: drop-shadow(0 0 10px rgba(197, 160, 89, 0.4)) drop-shadow(0 12px 24px rgba(0,0,0,0.35)); transform: translateY(0) scale(1); }
+			50% { filter: drop-shadow(0 0 28px rgba(197, 160, 89, 0.8)) drop-shadow(0 18px 30px rgba(0,0,0,0.45)); transform: translateY(-5px) scale(1.03); }
+			100% { filter: drop-shadow(0 0 10px rgba(197, 160, 89, 0.4)) drop-shadow(0 12px 24px rgba(0,0,0,0.35)); transform: translateY(0) scale(1); }
+		}
+
+		/* ── First Screen: Luxury Established Badge ── */
+		.aofa-luxury-badge {
+			display: inline-flex !important;
+			align-items: center !important;
+			gap: 8px !important;
+			background: rgba(197, 160, 89, 0.15) !important;
+			border: 1px solid rgba(197, 160, 89, 0.4) !important;
+			color: #C5A059 !important;
+			font-size: 0.75rem !important;
+			font-weight: 700 !important;
+			text-transform: uppercase !important;
+			letter-spacing: 0.12em !important;
+			padding: 6px 16px !important;
+			border-radius: 30px !important;
+			margin-bottom: 1.25rem !important;
+			backdrop-filter: blur(4px) !important;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+		}
+
+		/* ── First Screen: Slider Progress Dots ── */
+		.aofa-dot {
+			transition: all 0.3s ease !important;
+		}
+		.aofa-dot.active {
+			background-color: #C5A059 !important;
+			width: 28px !important;
+			border-radius: 10px !important;
+		}
+
+		/* ── First Screen: Stats Ribbon Counter Hover Glow ── */
+		.wp-block-columns .wp-block-column h3 {
+			transition: color 0.3s ease, transform 0.3s ease !important;
+		}
+		.wp-block-columns .wp-block-column:hover h3 {
+			color: #ffffff !important;
+			text-shadow: 0 0 18px rgba(197, 160, 89, 0.7) !important;
+			transform: scale(1.06) !important;
+		}
 	</style>
 	<?php
 }, 999 );
@@ -969,6 +1083,150 @@ function aofa_render_executive_diplomatic_footer(): void {
 	<?php
 }
 add_action( 'wp_footer', 'aofa_render_executive_diplomatic_footer', 999 );
+
+/**
+ * Dynamic First Screen Enhancements (Auto-slider, Crest Pulse, Announcement Ticker, Animated Counters).
+ */
+function aofa_first_screen_dynamic_enhancements(): void {
+	if ( ! is_front_page() && ! is_home() ) {
+		return;
+	}
+	?>
+	<script id="aofa-first-screen-js">
+	(function() {
+		'use strict';
+
+		document.addEventListener('DOMContentLoaded', function() {
+
+			// ── 1. Live Diplomatic Announcement Ticker ──
+			if (!document.querySelector('.aofa-ticker-wrap')) {
+				var tickerBar = document.createElement('div');
+				tickerBar.className = 'aofa-ticker-wrap';
+				tickerBar.innerHTML = '<span class="aofa-ticker-badge"><span class="aofa-pulse-dot"></span> OFFICIAL BULLETIN</span>' +
+					'<span class="aofa-ticker-text"><a href="/notice">Extraordinary General Meeting (EGM) Notice & Annual Subscription Update &mdash; Read Official Notices &rarr;</a></span>';
+				
+				var headerEl = document.querySelector('.site-header') || document.querySelector('.aofa-site-header') || document.querySelector('header');
+				if (headerEl && headerEl.parentNode) {
+					headerEl.parentNode.insertBefore(tickerBar, headerEl.nextSibling);
+				} else {
+					document.body.insertBefore(tickerBar, document.body.firstChild);
+				}
+			}
+
+			// ── 2. Luxury Established Badge Injection ──
+			var heroH1 = document.querySelector('.aofa-hero-slide h1') || document.querySelector('.aofa-main-home h1') || document.querySelector('.wp-block-heading');
+			if (heroH1 && !document.querySelector('.aofa-luxury-badge')) {
+				var badge = document.createElement('div');
+				badge.className = 'aofa-luxury-badge';
+				badge.innerHTML = '✨ ESTABLISHED 2004 &bull; DIPLOMATIC FELLOWSHIP & PUBLIC SERVICE';
+				heroH1.parentNode.insertBefore(badge, heroH1);
+			}
+
+			// ── 3. Auto-Playing Hero Slider (5s Timer) ──
+			var slides = document.querySelectorAll('.aofa-hero-slide');
+			var dots = document.querySelectorAll('.aofa-dot');
+			if (slides.length > 1) {
+				var currentSlideIdx = 0;
+				var slideTimer = null;
+
+				function goToSlide(index) {
+					slides.forEach(function(slide, i) {
+						if (i === index) {
+							slide.style.opacity = '1';
+							slide.style.pointerEvents = 'auto';
+							slide.style.zIndex = '2';
+						} else {
+							slide.style.opacity = '0';
+							slide.style.pointerEvents = 'none';
+							slide.style.zIndex = '1';
+						}
+					});
+					dots.forEach(function(dot, i) {
+						if (i === index) {
+							dot.classList.add('active');
+						} else {
+							dot.classList.remove('active');
+						}
+					});
+					currentSlideIdx = index;
+				}
+
+				function autoNextSlide() {
+					var next = (currentSlideIdx + 1) % slides.length;
+					goToSlide(next);
+				}
+
+				function startSliderTimer() {
+					if (slideTimer) clearInterval(slideTimer);
+					slideTimer = setInterval(autoNextSlide, 5000);
+				}
+
+				var heroContainer = document.querySelector('.aofa-hero-slider-container');
+				if (heroContainer) {
+					heroContainer.addEventListener('mouseenter', function() {
+						if (slideTimer) clearInterval(slideTimer);
+					});
+					heroContainer.addEventListener('mouseleave', function() {
+						startSliderTimer();
+					});
+				}
+
+				// Global function hook for manual arrows
+				window.moveAofaSlide = function(dir) {
+					var next = (currentSlideIdx + dir + slides.length) % slides.length;
+					goToSlide(next);
+					startSliderTimer();
+				};
+
+				window.setAofaSlide = function(idx) {
+					goToSlide(idx);
+					startSliderTimer();
+				};
+
+				startSliderTimer();
+			}
+
+			// ── 4. Animated Stats Ribbon Counter (0 -> 106+, 0 -> 14, 0 -> 40+) ──
+			function animateNumberCounter(el, targetNum, suffixStr) {
+				var startNum = 0;
+				var duration = 1800; // ms
+				var startTime = null;
+
+				function stepCounter(timestamp) {
+					if (!startTime) startTime = timestamp;
+					var progress = Math.min((timestamp - startTime) / duration, 1);
+					var easeOutQuad = 1 - Math.pow(1 - progress, 3);
+					var currentVal = Math.floor(easeOutQuad * targetNum);
+					el.textContent = currentVal + suffixStr;
+					if (progress < 1) {
+						window.requestAnimationFrame(stepCounter);
+					} else {
+						el.textContent = targetNum + suffixStr;
+					}
+				}
+				window.requestAnimationFrame(stepCounter);
+			}
+
+			// Locate and trigger animated stat numbers
+			var statElements = document.querySelectorAll('.wp-block-columns .wp-block-column h3');
+			statElements.forEach(function(statEl) {
+				var txt = statEl.textContent.trim();
+				if (txt.indexOf('106') !== -1) {
+					animateNumberCounter(statEl, 106, '+');
+				} else if (txt === '14' || txt.indexOf('14') !== -1) {
+					animateNumberCounter(statEl, 14, '');
+				} else if (txt.indexOf('40') !== -1) {
+					animateNumberCounter(statEl, 40, '+ Years');
+				}
+			});
+
+		});
+	})();
+	</script>
+	<?php
+}
+add_action( 'wp_footer', 'aofa_first_screen_dynamic_enhancements', 998 );
+
 
 /**
  * Runs on plugin activation: flushes rewrite rules so CPT URLs work immediately.
