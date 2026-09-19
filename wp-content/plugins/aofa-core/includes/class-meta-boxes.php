@@ -27,6 +27,26 @@ class Aofa_Meta_Boxes {
 	 * @since 1.0.0
 	 */
 	public static function register(): void {
+		// ── Member meta ────────────────────────────────────────────────────────
+		add_meta_box(
+			'aofa_member_details',
+			__( 'Member Details', 'aofa-core' ),
+			array( self::class, 'render_member_meta_box' ),
+			'aofa_member',
+			'normal',
+			'high'
+		);
+
+		// ── EC Member meta ──────────────────────────────────────────────────────
+		add_meta_box(
+			'aofa_ec_member_details',
+			__( 'Executive Committee Details', 'aofa-core' ),
+			array( self::class, 'render_ec_member_meta_box' ),
+			'aofa_ec_member',
+			'normal',
+			'high'
+		);
+
 		// ── Article meta ──────────────────────────────────────────────────────
 		add_meta_box(
 			'aofa_article_details',
@@ -46,6 +66,112 @@ class Aofa_Meta_Boxes {
 			'normal',
 			'high'
 		);
+	}
+
+	// ── Member Meta Box ───────────────────────────────────────────────────────
+
+	/**
+	 * Render the Member Details meta box.
+	 *
+	 * @param WP_Post $post The current post object.
+	 */
+	public static function render_member_meta_box( WP_Post $post ): void {
+		wp_nonce_field( 'aofa_save_member_meta', 'aofa_member_meta_nonce' );
+
+		$no      = get_post_meta( $post->ID, '_aofa_member_no', true );
+		$address = get_post_meta( $post->ID, '_aofa_address', true );
+		$phone   = get_post_meta( $post->ID, '_aofa_phone', true );
+		$email   = get_post_meta( $post->ID, '_aofa_email', true );
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><label for="aofa_member_no"><?php esc_html_e( 'Member No / Serial', 'aofa-core' ); ?></label></th>
+				<td><input type="text" id="aofa_member_no" name="aofa_member_no" value="<?php echo esc_attr( $no ); ?>" class="regular-text" /></td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="aofa_address"><?php esc_html_e( 'Address', 'aofa-core' ); ?></label></th>
+				<td><textarea id="aofa_address" name="aofa_address" class="large-text" rows="3"><?php echo esc_textarea( $address ); ?></textarea></td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="aofa_phone"><?php esc_html_e( 'Phone', 'aofa-core' ); ?></label></th>
+				<td><input type="text" id="aofa_phone" name="aofa_phone" value="<?php echo esc_attr( $phone ); ?>" class="regular-text" /></td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="aofa_email"><?php esc_html_e( 'Email', 'aofa-core' ); ?></label></th>
+				<td><input type="email" id="aofa_email" name="aofa_email" value="<?php echo esc_attr( $email ); ?>" class="regular-text" /></td>
+			</tr>
+		</table>
+		<?php
+	}
+
+	/**
+	 * Save Member meta on post save.
+	 *
+	 * @param int $post_id The ID of the post being saved.
+	 */
+	public static function save_member_meta( int $post_id ): void {
+		if ( ! self::can_save( $post_id, 'aofa_save_member_meta', 'aofa_member_meta_nonce' ) ) {
+			return;
+		}
+
+		$fields = array(
+			'_aofa_member_no' => array( 'key' => 'aofa_member_no', 'sanitize' => 'sanitize_text_field' ),
+			'_aofa_address'   => array( 'key' => 'aofa_address',   'sanitize' => 'sanitize_textarea_field' ),
+			'_aofa_phone'     => array( 'key' => 'aofa_phone',     'sanitize' => 'sanitize_text_field' ),
+			'_aofa_email'     => array( 'key' => 'aofa_email',     'sanitize' => 'sanitize_email' ),
+		);
+
+		self::save_fields( $post_id, $fields );
+	}
+
+	// ── EC Member Meta Box ────────────────────────────────────────────────────
+
+	/**
+	 * Render the EC Member Details meta box.
+	 *
+	 * @param WP_Post $post The current post object.
+	 */
+	public static function render_ec_member_meta_box( WP_Post $post ): void {
+		wp_nonce_field( 'aofa_save_ec_member_meta', 'aofa_ec_member_meta_nonce' );
+
+		$serial   = get_post_meta( $post->ID, '_aofa_ec_serial', true );
+		$position = get_post_meta( $post->ID, '_aofa_ec_position', true );
+		$term     = get_post_meta( $post->ID, '_aofa_ec_term', true );
+		?>
+		<table class="form-table" role="presentation">
+			<tr>
+				<th scope="row"><label for="aofa_ec_serial"><?php esc_html_e( 'Serial No', 'aofa-core' ); ?></label></th>
+				<td><input type="text" id="aofa_ec_serial" name="aofa_ec_serial" value="<?php echo esc_attr( $serial ); ?>" class="regular-text" /></td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="aofa_ec_position"><?php esc_html_e( 'Position', 'aofa-core' ); ?></label></th>
+				<td><input type="text" id="aofa_ec_position" name="aofa_ec_position" value="<?php echo esc_attr( $position ); ?>" class="regular-text" placeholder="e.g. President, Vice President-I" /></td>
+			</tr>
+			<tr>
+				<th scope="row"><label for="aofa_ec_term"><?php esc_html_e( 'Term', 'aofa-core' ); ?></label></th>
+				<td><input type="text" id="aofa_ec_term" name="aofa_ec_term" value="<?php echo esc_attr( $term ); ?>" class="regular-text" placeholder="e.g. 2026-2027" /></td>
+			</tr>
+		</table>
+		<?php
+	}
+
+	/**
+	 * Save EC Member meta on post save.
+	 *
+	 * @param int $post_id The ID of the post being saved.
+	 */
+	public static function save_ec_member_meta( int $post_id ): void {
+		if ( ! self::can_save( $post_id, 'aofa_save_ec_member_meta', 'aofa_ec_member_meta_nonce' ) ) {
+			return;
+		}
+
+		$fields = array(
+			'_aofa_ec_serial'   => array( 'key' => 'aofa_ec_serial',   'sanitize' => 'sanitize_text_field' ),
+			'_aofa_ec_position' => array( 'key' => 'aofa_ec_position', 'sanitize' => 'sanitize_text_field' ),
+			'_aofa_ec_term'     => array( 'key' => 'aofa_ec_term',     'sanitize' => 'sanitize_text_field' ),
+		);
+
+		self::save_fields( $post_id, $fields );
 	}
 
 	// ── Article Meta Box ──────────────────────────────────────────────────────

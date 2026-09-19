@@ -338,6 +338,12 @@ add_filter( 'get_the_excerpt', function( $excerpt, $post = null ) {
 /** Register meta boxes in the admin. */
 add_action( 'add_meta_boxes', array( 'Aofa_Meta_Boxes', 'register' ) );
 
+/** Save Member meta. */
+add_action( 'save_post_aofa_member', array( 'Aofa_Meta_Boxes', 'save_member_meta' ) );
+
+/** Save EC Member meta. */
+add_action( 'save_post_aofa_ec_member', array( 'Aofa_Meta_Boxes', 'save_ec_member_meta' ) );
+
 /** Save Article meta. */
 add_action( 'save_post_aofa_article', array( 'Aofa_Meta_Boxes', 'save_article_meta' ) );
 

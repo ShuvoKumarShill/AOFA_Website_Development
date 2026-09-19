@@ -34,6 +34,96 @@ class Aofa_Post_Types {
 		self::register_notice();
 		self::register_article();
 		self::register_gallery();
+		self::register_member();
+		self::register_ec_member();
+	}
+
+	// ── aofa_member ──────────────────────────────────────────────────────────
+
+	/**
+	 * Regular & Honorary Members.
+	 *
+	 * Source: archive_recovery/01_MEMBERS/members_list.md
+	 *
+	 * @since 1.0.0
+	 */
+	private static function register_member(): void {
+		$labels = array(
+			'name'               => _x( 'Members', 'Post type general name', 'aofa-core' ),
+			'singular_name'      => _x( 'Member', 'Post type singular name', 'aofa-core' ),
+			'menu_name'          => _x( 'Members', 'Admin Menu text', 'aofa-core' ),
+			'add_new'            => __( 'Add Member', 'aofa-core' ),
+			'add_new_item'       => __( 'Add New Member', 'aofa-core' ),
+			'edit_item'          => __( 'Edit Member', 'aofa-core' ),
+			'view_item'          => __( 'View Member', 'aofa-core' ),
+			'all_items'          => __( 'All Members', 'aofa-core' ),
+			'search_items'       => __( 'Search Members', 'aofa-core' ),
+			'not_found'          => __( 'No members found.', 'aofa-core' ),
+			'not_found_in_trash' => __( 'No members found in Trash.', 'aofa-core' ),
+		);
+
+		$args = array(
+			'labels'             => $labels,
+			'public'             => true,
+			'publicly_queryable' => true,
+			'show_ui'            => true,
+			'show_in_menu'       => true,
+			'query_var'          => true,
+			'rewrite'            => array( 'slug' => 'member' ),
+			'capability_type'    => 'post',
+			'has_archive'        => 'members',
+			'hierarchical'       => false,
+			'menu_position'      => 5,
+			'menu_icon'          => 'dashicons-id-alt',
+			'supports'           => array( 'title', 'editor', 'thumbnail', 'custom-fields', 'excerpt' ),
+			'show_in_rest'       => true,
+			'taxonomies'         => array( 'aofa_member_type' ),
+		);
+
+		register_post_type( 'aofa_member', $args );
+	}
+
+	// ── aofa_ec_member ───────────────────────────────────────────────────────
+
+	/**
+	 * Executive Committee Members across different terms.
+	 *
+	 * @since 1.0.0
+	 */
+	private static function register_ec_member(): void {
+		$labels = array(
+			'name'               => _x( 'Executive Committee', 'Post type general name', 'aofa-core' ),
+			'singular_name'      => _x( 'EC Member', 'Post type singular name', 'aofa-core' ),
+			'menu_name'          => _x( 'Executive Committee', 'Admin Menu text', 'aofa-core' ),
+			'add_new'            => __( 'Add EC Member', 'aofa-core' ),
+			'add_new_item'       => __( 'Add New EC Member', 'aofa-core' ),
+			'edit_item'          => __( 'Edit EC Member', 'aofa-core' ),
+			'view_item'          => __( 'View EC Member', 'aofa-core' ),
+			'all_items'          => __( 'All EC Members', 'aofa-core' ),
+			'search_items'       => __( 'Search EC Members', 'aofa-core' ),
+			'not_found'          => __( 'No EC members found.', 'aofa-core' ),
+			'not_found_in_trash' => __( 'No EC members found in Trash.', 'aofa-core' ),
+		);
+
+		$args = array(
+			'labels'             => $labels,
+			'public'             => true,
+			'publicly_queryable' => true,
+			'show_ui'            => true,
+			'show_in_menu'       => true,
+			'query_var'          => true,
+			'rewrite'            => array( 'slug' => 'ec-member' ),
+			'capability_type'    => 'post',
+			'has_archive'        => 'executive-committee',
+			'hierarchical'       => false,
+			'menu_position'      => 6,
+			'menu_icon'          => 'dashicons-groups',
+			'supports'           => array( 'title', 'editor', 'thumbnail', 'custom-fields', 'excerpt' ),
+			'show_in_rest'       => true,
+			'taxonomies'         => array( 'aofa_committee_term' ),
+		);
+
+		register_post_type( 'aofa_ec_member', $args );
 	}
 
 	// ── aofa_notice ──────────────────────────────────────────────────────────
