@@ -193,8 +193,27 @@ add_action( 'wp_head', function() {
 			justify-content: center !important;
 			gap: 14px !important;
 			box-shadow: 0 4px 16px rgba(0,0,0,0.2) !important;
-			z-index: 99 !important;
+			z-index: 10 !important;
 			position: relative !important;
+		}
+
+		/* ── Ensure Header & Sub-menus always render on top of ticker ── */
+		header,
+		.site-header,
+		.aofa-site-header,
+		.ast-main-header-wrap,
+		.main-header-bar,
+		.site-navigation,
+		.main-header-menu {
+			position: relative !important;
+			z-index: 9999 !important;
+		}
+
+		.main-header-menu .sub-menu,
+		.sub-menu,
+		.wp-block-navigation-submenu {
+			z-index: 999999 !important;
+			position: absolute !important;
 		}
 		.aofa-ticker-badge {
 			background: #C5A059 !important;
@@ -1154,7 +1173,7 @@ function aofa_first_screen_dynamic_enhancements(): void {
 				
 				var headerEl = document.querySelector('.site-header') || document.querySelector('.aofa-site-header') || document.querySelector('header');
 				if (headerEl && headerEl.parentNode) {
-					headerEl.parentNode.insertBefore(tickerBar, headerEl.nextSibling);
+					headerEl.parentNode.insertBefore(tickerBar, headerEl);
 				} else {
 					document.body.insertBefore(tickerBar, document.body.firstChild);
 				}
