@@ -362,6 +362,22 @@ blockquote {
 	color: var(--wp--preset--color--aofa-accent-light);
 }
 
+.aofa-social-links a:hover {
+	background: var(--wp--preset--color--aofa-accent) !important;
+	color: var(--wp--preset--color--aofa-primary) !important;
+	transform: translateY(-2px);
+	border-color: var(--wp--preset--color--aofa-accent) !important;
+}
+
+.aofa-footer-cta-box {
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.aofa-footer-cta-box:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35) !important;
+}
+
 /* ── 13. Pagination ───────────────────────────────────────────────────────── */
 
 .wp-block-query-pagination {

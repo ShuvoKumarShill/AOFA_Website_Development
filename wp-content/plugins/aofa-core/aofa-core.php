@@ -718,6 +718,259 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 // ── Activation / Deactivation Hooks ─────────────────────────────────────────
 
 /**
+ * Render Executive Diplomatic Footer on Front End.
+ */
+function aofa_render_executive_diplomatic_footer(): void {
+	?>
+	<style id="aofa-executive-footer-styles">
+		/* Hide default theme footer */
+		#colophon.site-footer,
+		.site-below-footer-wrap,
+		.ast-small-footer-section {
+			display: none !important;
+		}
+
+		/* Executive Diplomatic Footer Styling */
+		.aofa-executive-footer {
+			background: linear-gradient(180deg, #001f36 0%, #001222 100%) !important;
+			color: #ffffff !important;
+			border-top: 4px solid #C5A059 !important;
+			padding: 4rem 1.5rem 2rem 1.5rem !important;
+			font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+			position: relative !important;
+			z-index: 10 !important;
+			width: 100% !important;
+			box-sizing: border-box !important;
+		}
+		.aofa-executive-footer-container {
+			max-width: 1200px !important;
+			margin: 0 auto !important;
+		}
+		.aofa-footer-cta-box {
+			background: linear-gradient(135deg, rgba(0,43,73,0.95) 0%, rgba(0,25,48,0.98) 100%) !important;
+			border: 1px solid rgba(197, 160, 89, 0.35) !important;
+			border-radius: 14px !important;
+			padding: 2.25rem 2.5rem !important;
+			margin-bottom: 3.5rem !important;
+			box-shadow: 0 16px 36px rgba(0,0,0,0.3) !important;
+			display: flex !important;
+			justify-content: space-between !important;
+			align-items: center !important;
+			flex-wrap: wrap !important;
+			gap: 1.5rem !important;
+		}
+		.aofa-footer-cta-title {
+			font-size: 1.55rem !important;
+			font-weight: 700 !important;
+			color: #ffffff !important;
+			margin: 0 0 6px 0 !important;
+			letter-spacing: -0.01em !important;
+		}
+		.aofa-footer-cta-desc {
+			font-size: 0.95rem !important;
+			color: rgba(255,255,255,0.82) !important;
+			margin: 0 !important;
+			max-width: 620px !important;
+			line-height: 1.6 !important;
+		}
+		.aofa-footer-cta-btn {
+			background: #C5A059 !important;
+			color: #002B49 !important;
+			font-weight: 700 !important;
+			padding: 12px 26px !important;
+			border-radius: 6px !important;
+			text-decoration: none !important;
+			display: inline-block !important;
+			transition: all 0.25s ease !important;
+			box-shadow: 0 4px 16px rgba(197, 160, 89, 0.35) !important;
+		}
+		.aofa-footer-cta-btn:hover {
+			background: #D8B46B !important;
+			transform: translateY(-2px) !important;
+			box-shadow: 0 8px 24px rgba(197, 160, 89, 0.5) !important;
+			color: #001930 !important;
+		}
+		.aofa-footer-grid {
+			display: grid !important;
+			grid-template-columns: 2fr 1fr 1fr 1.25fr !important;
+			gap: 2.5rem !important;
+			margin-bottom: 3rem !important;
+		}
+		@media (max-width: 900px) {
+			.aofa-footer-grid {
+				grid-template-columns: 1fr 1fr !important;
+			}
+		}
+		@media (max-width: 600px) {
+			.aofa-footer-grid {
+				grid-template-columns: 1fr !important;
+			}
+			.aofa-footer-cta-box {
+				flex-direction: column !important;
+				align-items: flex-start !important;
+			}
+		}
+		.aofa-footer-col-title {
+			font-size: 0.85rem !important;
+			font-weight: 700 !important;
+			text-transform: uppercase !important;
+			letter-spacing: 0.1em !important;
+			color: #C5A059 !important;
+			margin: 0 0 1.25rem 0 !important;
+			position: relative !important;
+			padding-bottom: 6px !important;
+		}
+		.aofa-footer-col-title::after {
+			content: '' !important;
+			display: block !important;
+			width: 32px !important;
+			height: 2px !important;
+			background: #C5A059 !important;
+			margin-top: 6px !important;
+		}
+		.aofa-footer-menu {
+			list-style: none !important;
+			padding: 0 !important;
+			margin: 0 !important;
+		}
+		.aofa-footer-menu li {
+			margin-bottom: 0.65rem !important;
+		}
+		.aofa-footer-menu a {
+			color: rgba(255, 255, 255, 0.78) !important;
+			text-decoration: none !important;
+			font-size: 0.9rem !important;
+			transition: all 0.2s ease !important;
+			display: inline-block !important;
+		}
+		.aofa-footer-menu a:hover {
+			color: #C5A059 !important;
+			transform: translateX(4px) !important;
+		}
+		.aofa-social-icon {
+			display: inline-flex !important;
+			align-items: center !important;
+			justify-content: center !important;
+			width: 38px !important;
+			height: 38px !important;
+			border-radius: 50% !important;
+			background: rgba(255, 255, 255, 0.08) !important;
+			color: #C5A059 !important;
+			border: 1px solid rgba(197, 160, 89, 0.3) !important;
+			transition: all 0.25s ease !important;
+			text-decoration: none !important;
+		}
+		.aofa-social-icon:hover {
+			background: #C5A059 !important;
+			color: #002B49 !important;
+			transform: translateY(-2px) !important;
+		}
+		.aofa-footer-bottom-bar {
+			border-top: 1px solid rgba(197, 160, 89, 0.2) !important;
+			padding-top: 1.5rem !important;
+			display: flex !important;
+			justify-content: space-between !important;
+			align-items: center !important;
+			flex-wrap: wrap !important;
+			gap: 1rem !important;
+			font-size: 0.83rem !important;
+			color: rgba(255, 255, 255, 0.65) !important;
+		}
+	</style>
+
+	<footer class="aofa-executive-footer">
+		<div class="aofa-executive-footer-container">
+			
+			<!-- CTA Banner -->
+			<div class="aofa-footer-cta-box">
+				<div>
+					<h3 class="aofa-footer-cta-title">Serving the Nation Through Diplomatic Stewardship</h3>
+					<p class="aofa-footer-cta-desc">Connecting former ambassadors and senior diplomatic cadres to advance foreign policy research, strategic counsel, and international relations.</p>
+				</div>
+				<div>
+					<a href="/contact" class="aofa-footer-cta-btn">Contact Secretariat &rarr;</a>
+				</div>
+			</div>
+
+			<!-- 4-Column Grid -->
+			<div class="aofa-footer-grid">
+				
+				<!-- Column 1: Brand & Mission -->
+				<div>
+					<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+						<img src="/wp-content/themes/aofa-theme/assets/images/aofa-crest.png" alt="AOFA Crest" style="width:54px;height:54px;object-fit:contain;border-radius:50%;border:2px solid #C5A059;box-shadow:0 4px 12px rgba(0,0,0,0.3);"/>
+						<div>
+							<h3 style="font-size:1.3rem;font-weight:800;color:#ffffff;margin:0;line-height:1.2;">AOFA Bangladesh</h3>
+							<p style="font-size:0.75rem;color:#C5A059;margin:3px 0 0 0;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Association of Former BCS(FA) Ambassadors</p>
+						</div>
+					</div>
+					<p style="font-size:0.88rem;line-height:1.7;color:rgba(255,255,255,0.78);max-width:380px;margin-bottom:18px;">
+						The premiere professional body of retired Bangladesh Foreign Service Ambassadors, dedicated to diplomatic fellowship, international engagement, and public advisory.
+					</p>
+					<div style="display:flex;gap:10px;">
+						<a href="https://aofabd.com" class="aofa-social-icon" aria-label="Website"><span class="dashicons dashicons-admin-site"></span></a>
+						<a href="mailto:secretariat@aofabd.com" class="aofa-social-icon" aria-label="Email"><span class="dashicons dashicons-email"></span></a>
+						<a href="/notice" class="aofa-social-icon" aria-label="Notices"><span class="dashicons dashicons-megaphone"></span></a>
+					</div>
+				</div>
+
+				<!-- Column 2: Quick Links -->
+				<div>
+					<h4 class="aofa-footer-col-title">Quick Links</h4>
+					<ul class="aofa-footer-menu">
+						<li><a href="/">Home Page</a></li>
+						<li><a href="/about">About AOFA</a></li>
+						<li><a href="/messages">President's Message</a></li>
+						<li><a href="/constitution">Constitution & Bylaws</a></li>
+						<li><a href="/executive-committee">Executive Committee</a></li>
+					</ul>
+				</div>
+
+				<!-- Column 3: Publications -->
+				<div>
+					<h4 class="aofa-footer-col-title">Publications</h4>
+					<ul class="aofa-footer-menu">
+						<li><a href="/article">Articles & Research</a></li>
+						<li><a href="/article">Book Reviews</a></li>
+						<li><a href="/notice">Official Notices</a></li>
+						<li><a href="/gallery">Photo Gallery</a></li>
+						<li><a href="/members">Member Directory</a></li>
+					</ul>
+				</div>
+
+				<!-- Column 4: Secretariat -->
+				<div>
+					<h4 class="aofa-footer-col-title">Secretariat</h4>
+					<p style="font-size:0.88rem;line-height:1.75;color:rgba(255,255,255,0.85);margin-bottom:12px;">
+						<strong style="color:#ffffff;display:block;margin-bottom:2px;">AOFA Secretariat Headquarters</strong>
+						Foreign Service Academy Campus<br/>
+						Dhaka, People's Republic of Bangladesh
+					</p>
+					<p style="font-size:0.88rem;line-height:1.75;color:rgba(255,255,255,0.85);margin:0;">
+						<strong style="color:#C5A059;">Email:</strong> <a href="mailto:secretariat@aofabd.com" style="color:rgba(255,255,255,0.9);text-decoration:none;">secretariat@aofabd.com</a><br/>
+						<strong style="color:#C5A059;">Web:</strong> <a href="https://aofabd.com" style="color:rgba(255,255,255,0.9);text-decoration:none;">aofabd.com</a>
+					</p>
+				</div>
+
+			</div>
+
+			<!-- Bottom Copyright Bar -->
+			<div class="aofa-footer-bottom-bar">
+				<div>&copy; 2026 Association of Former BCS(FA) Ambassadors (AOFA). All rights reserved.</div>
+				<div style="display:flex;gap:16px;align-items:center;">
+					<span>Serving Bangladesh Diplomatic Legacy</span>
+					<span>&bull;</span>
+					<a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" style="color:#C5A059;text-decoration:none;font-weight:600;">Back to top &uarr;</a>
+				</div>
+			</div>
+
+		</div>
+	</footer>
+	<?php
+}
+add_action( 'wp_footer', 'aofa_render_executive_diplomatic_footer', 999 );
+
+/**
  * Runs on plugin activation: flushes rewrite rules so CPT URLs work immediately.
  */
 function aofa_core_activate(): void {
@@ -733,3 +986,4 @@ function aofa_core_deactivate(): void {
 	flush_rewrite_rules();
 }
 register_deactivation_hook( __FILE__, 'aofa_core_deactivate' );
+
