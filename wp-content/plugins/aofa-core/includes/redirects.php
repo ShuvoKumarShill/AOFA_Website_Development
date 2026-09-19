@@ -51,9 +51,6 @@ function aofa_legacy_redirects(): void {
 		'/members-list/'                              => '/members/',
 		'/members-list'                               => '/members/',
 
-		// Executive Committee (old single page)
-		'/executive-committee/'                       => '/executive-committee/',
-
 		// Constitution
 		'/constitution/'                              => '/constitution/',
 

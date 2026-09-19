@@ -592,12 +592,9 @@ function aofa_render_photo_gallery_shortcode( $atts = array() ): string {
 			}
 		}
 
-		// Fallback if no images attached
+		// Skip albums with no images — do not include a broken fallback path
 		if ( empty( $photos ) ) {
-			$photos[] = array(
-				'url'     => home_url( '/wp-content/themes/aofa-theme/assets/images/gallery-conference.png' ),
-				'caption' => $p->post_title,
-			);
+			continue;
 		}
 
 		$albums_data[] = array(
@@ -1564,7 +1561,26 @@ function aofa_render_executive_diplomatic_footer(): void {
 				<!-- Column 1: Brand & Mission -->
 				<div>
 					<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-						<img src="/wp-content/themes/aofa-theme/assets/images/aofa-crest.png" alt="AOFA Crest" style="width:54px;height:54px;object-fit:contain;border-radius:50%;border:2px solid #C5A059;box-shadow:0 4px 12px rgba(0,0,0,0.3);"/>
+						<?php
+						// Try to find the AOFA crest from the media library by searching for attachment by title/filename.
+						$crest_img_url = '';
+						$crest_attach  = get_posts( array(
+							'post_type'      => 'attachment',
+							'post_status'    => 'inherit',
+							'posts_per_page' => 1,
+							's'              => 'aofa-crest',
+							'orderby'        => 'relevance',
+						) );
+						if ( ! empty( $crest_attach ) ) {
+							$crest_img_url = wp_get_attachment_image_url( $crest_attach[0]->ID, 'thumbnail' );
+						}
+						// Fallback: check if an aofa-crest image exists in the uploads directory
+						if ( $crest_img_url ) :
+						?>
+						<img src="<?php echo esc_url( $crest_img_url ); ?>" alt="AOFA Crest" style="width:54px;height:54px;object-fit:contain;border-radius:50%;border:2px solid #C5A059;box-shadow:0 4px 12px rgba(0,0,0,0.3);"/>
+						<?php else : ?>
+						<div style="width:54px;height:54px;border-radius:50%;border:2px solid #C5A059;box-shadow:0 4px 12px rgba(0,0,0,0.3);background:linear-gradient(135deg,#002B49,#001222);display:flex;align-items:center;justify-content:center;font-size:1.6rem;" aria-hidden="true">🌐</div>
+						<?php endif; ?>
 						<div>
 							<h3 style="font-size:1.3rem;font-weight:800;color:#ffffff;margin:0;line-height:1.2;">AOFA Bangladesh</h3>
 							<p style="font-size:0.75rem;color:#C5A059;margin:3px 0 0 0;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Association of Former BCS(FA) Ambassadors</p>
@@ -1622,7 +1638,7 @@ function aofa_render_executive_diplomatic_footer(): void {
 
 			<!-- Bottom Copyright Bar -->
 			<div class="aofa-footer-bottom-bar">
-				<div>&copy; 2026 Association of Former BCS(FA) Ambassadors (AOFA). All rights reserved.</div>
+				<div>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> Association of Former BCS(FA) Ambassadors (AOFA). All rights reserved.</div>
 				<div style="display:flex;gap:16px;align-items:center;">
 					<span>Serving Bangladesh Diplomatic Legacy</span>
 					<span>&bull;</span>
@@ -1785,37 +1801,44 @@ function aofa_first_screen_dynamic_enhancements(): void {
 				startSliderTimer();
 			}
 
-			// ── 4. Animated Stats Ribbon Counter (0 -> 106+, 0 -> 14, 0 -> 40+) ──
-			function animateNumberCounter(el, targetNum, suffixStr) {
-				var startNum = 0;
-				var duration = 1800; // ms
-				var startTime = null;
+			// ── 4. Animated Stats Ribbon Counter (live values from PHP) ──
+			var aofaLiveStats = <?php
+				$stat_members  = (int) wp_count_posts( 'aofa_member' )->publish;
+				$stat_ec       = (int) wp_count_posts( 'aofa_ec_member' )->publish;
+				$stat_articles = (int) wp_count_posts( 'aofa_article' )->publish;
+				echo wp_json_encode( array(
+					'members'  => $stat_members,
+					'ec'       => $stat_ec,
+					'articles' => $stat_articles,
+				) );
+			?>;
 
+			function animateNumberCounter(el, targetNum, suffixStr) {
+				var duration = 1800;
+				var startTime = null;
 				function stepCounter(timestamp) {
 					if (!startTime) startTime = timestamp;
 					var progress = Math.min((timestamp - startTime) / duration, 1);
-					var easeOutQuad = 1 - Math.pow(1 - progress, 3);
-					var currentVal = Math.floor(easeOutQuad * targetNum);
-					el.textContent = currentVal + suffixStr;
-					if (progress < 1) {
-						window.requestAnimationFrame(stepCounter);
-					} else {
-						el.textContent = targetNum + suffixStr;
-					}
+					var eased = 1 - Math.pow(1 - progress, 3);
+					el.textContent = Math.floor(eased * targetNum) + suffixStr;
+					if (progress < 1) { window.requestAnimationFrame(stepCounter); }
+					else { el.textContent = targetNum + suffixStr; }
 				}
 				window.requestAnimationFrame(stepCounter);
 			}
 
-			// Locate and trigger animated stat numbers
+			// Locate stat headings by data attribute or content pattern and animate with live counts
 			var statElements = document.querySelectorAll('.wp-block-columns .wp-block-column h3');
 			statElements.forEach(function(statEl) {
 				var txt = statEl.textContent.trim();
-				if (txt.indexOf('106') !== -1) {
-					animateNumberCounter(statEl, 106, '+');
-				} else if (txt === '14' || txt.indexOf('14') !== -1) {
-					animateNumberCounter(statEl, 14, '');
-				} else if (txt.indexOf('40') !== -1) {
-					animateNumberCounter(statEl, 40, '+ Years');
+				// Match stat blocks by content keywords set in the page editor
+				if (/\d+\+?/.test(txt) && /member/i.test(statEl.closest('.wp-block-column')?.textContent || '')) {
+					animateNumberCounter(statEl, aofaLiveStats.members, '+');
+				} else if (/\d+/.test(txt) && /committee|ec/i.test(statEl.closest('.wp-block-column')?.textContent || '')) {
+					animateNumberCounter(statEl, aofaLiveStats.ec, '');
+				} else if (/year/i.test(txt) || /40/.test(txt)) {
+					var yr = new Date().getFullYear() - 2004;
+					animateNumberCounter(statEl, yr, '+ Years');
 				}
 			});
 
