@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name:       AOFA Core
- * Plugin URI:        https://aofabd.com
+ * Plugin URI:        https://aofabd.org
  * Description:       Core plugin for the Association of Former BCS(FA) Ambassadors website. Registers custom post types, taxonomies, and WP-CLI import commands. No page-builder dependencies.
  * Version:           1.0.0
  * Author:            AOFA Web Team
- * Author URI:        https://aofabd.com
+ * Author URI:        https://aofabd.org
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       aofa-core
@@ -1590,8 +1590,8 @@ function aofa_render_executive_diplomatic_footer(): void {
 						The premiere professional body of retired Bangladesh Foreign Service Ambassadors, dedicated to diplomatic fellowship, international engagement, and public advisory.
 					</p>
 					<div style="display:flex;gap:10px;">
-						<a href="https://aofabd.com" class="aofa-social-icon" aria-label="Website"><span class="dashicons dashicons-admin-site"></span></a>
-						<a href="mailto:secretariat@aofabd.com" class="aofa-social-icon" aria-label="Email"><span class="dashicons dashicons-email"></span></a>
+						<a href="https://aofabd.org" class="aofa-social-icon" aria-label="Website"><span class="dashicons dashicons-admin-site"></span></a>
+						<a href="mailto:secretariat@aofabd.org" class="aofa-social-icon" aria-label="Email"><span class="dashicons dashicons-email"></span></a>
 						<a href="/notice" class="aofa-social-icon" aria-label="Notices"><span class="dashicons dashicons-megaphone"></span></a>
 					</div>
 				</div>
@@ -1629,8 +1629,8 @@ function aofa_render_executive_diplomatic_footer(): void {
 						Dhaka, People's Republic of Bangladesh
 					</p>
 					<p style="font-size:0.88rem;line-height:1.75;color:rgba(255,255,255,0.85);margin:0;">
-						<strong style="color:#C5A059;">Email:</strong> <a href="mailto:secretariat@aofabd.com" style="color:rgba(255,255,255,0.9);text-decoration:none;">secretariat@aofabd.com</a><br/>
-						<strong style="color:#C5A059;">Web:</strong> <a href="https://aofabd.com" style="color:rgba(255,255,255,0.9);text-decoration:none;">aofabd.com</a>
+						<strong style="color:#C5A059;">Email:</strong> <a href="mailto:secretariat@aofabd.org" style="color:rgba(255,255,255,0.9);text-decoration:none;">secretariat@aofabd.org</a><br/>
+						<strong style="color:#C5A059;">Web:</strong> <a href="https://aofabd.org" style="color:rgba(255,255,255,0.9);text-decoration:none;">aofabd.org</a>
 					</p>
 				</div>
 

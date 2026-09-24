@@ -40,7 +40,7 @@ install: ## Install WordPress via WP-CLI (run after `make up`)
 	@echo "⏳  Waiting for WordPress to be ready..."
 	@sleep 5
 	$(WPCLI) core install \
-	  --url=http://localhost:8080 \
+	  --url=https://aofabd.org \
 	  --title="Association of Former Ambassadors" \
 	  --admin_user=admin \
 	  --admin_password=admin123 \
