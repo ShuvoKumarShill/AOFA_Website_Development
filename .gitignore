@@ -58,3 +58,9 @@ mysql-data/
 # === PHPUnit ===
 .phpunit.result.cache
 coverage/
+
+# === Deploy Secrets & Large Archives ===
+ssh/
+*.tar.gz
+aofa_site_ready/
+

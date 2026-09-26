@@ -1,0 +1,34 @@
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+
+# ── Security Headers ──
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ── Prevent directory browsing ──
+Options -Indexes
+
+# ── Block access to sensitive files ──
+<FilesMatch "^(wp-config\.php|\.htaccess|readme\.html|license\.txt)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# ── Disable XML-RPC (common attack vector) ──
+<Files xmlrpc.php>
+    Order deny,allow
+    Deny from all
+</Files>
