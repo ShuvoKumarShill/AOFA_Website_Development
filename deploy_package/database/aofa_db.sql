@@ -162,7 +162,7 @@ INSERT INTO `aofa_options` VALUES
 (4,'blogname','AOFA','on'),
 (5,'blogdescription','','on'),
 (6,'users_can_register','0','on'),
-(7,'admin_email','whatsapp.shuvo26@gmail.com','on'),
+(7,'admin_email','aofa.bd21@gmail.com','on'),
 (8,'start_of_week','1','on'),
 (9,'use_balanceTags','0','on'),
 (10,'use_smilies','1','on'),
@@ -630,7 +630,7 @@ SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
 LOCK TABLES `aofa_users` WRITE;
 /*!40000 ALTER TABLE `aofa_users` DISABLE KEYS */;
 INSERT INTO `aofa_users` VALUES
-(1,'admin','$wp$2y$10$2cex9jMi.lIEAU5psSH.Y.rIzLlzYVb03FMHhEpIa36yDqMAfLdOa','admin','whatsapp.shuvo26@gmail.com','https://aofabd.org','2026-09-08 20:12:31','',0,'admin');
+(1,'admin','$wp$2y$10$2cex9jMi.lIEAU5psSH.Y.rIzLlzYVb03FMHhEpIa36yDqMAfLdOa','admin','aofa.bd21@gmail.com','https://aofabd.org','2026-09-08 20:12:31','',0,'admin');
 /*!40000 ALTER TABLE `aofa_users` ENABLE KEYS */;
 UNLOCK TABLES;
 COMMIT;

