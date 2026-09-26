@@ -104,67 +104,107 @@ add_action( 'wp_head', function() {
 			}
 		}
 
-		/* ── Mobile Navigation Drawer & Hamburger Styling ── */
+				/* ── Mobile Navigation Drawer & Hamburger Styling ── */
 		@media (max-width: 921px) {
 			.ast-mobile-header-wrap,
 			.ast-mobile-menu-buttons {
 				z-index: 999999 !important;
 			}
+
+			.ast-mobile-header-content,
 			.ast-mobile-popup-drawer,
 			.ast-mobile-header-drawer,
 			.ast-desktop-header-content,
 			.ast-mobile-menu-drawer,
+			#ast-mobile-header,
 			.main-navigation,
-			.site-navigation {
-				background: linear-gradient(180deg, #001222 0%, #002B49 100%) !important;
+			.site-navigation,
+			#ast-mobile-site-navigation,
+			#ast-hf-mobile-menu {
+				background: #001222 !important;
 			}
+
+			.ast-mobile-header-content {
+				background: linear-gradient(180deg, #001222 0%, #002B49 100%) !important;
+				padding: 10px 0 !important;
+				border-top: 2px solid #C5A059 !important;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+			}
+
+			.ast-mobile-header-content .main-header-menu,
 			.ast-mobile-popup-drawer .main-header-menu,
 			.ast-mobile-menu-drawer .main-header-menu,
-			.site-navigation .main-header-menu,
+			#ast-mobile-site-navigation .main-header-menu,
+			#ast-hf-mobile-menu .main-header-menu,
 			ul.main-header-menu {
 				display: flex !important;
 				flex-direction: column !important;
 				width: 100% !important;
-				padding: 15px 20px !important;
+				padding: 0 !important;
 				margin: 0 !important;
 				gap: 0 !important;
+				list-style: none !important;
 			}
+
+			.ast-mobile-header-content .main-header-menu .menu-item,
 			.ast-mobile-popup-drawer .main-header-menu .menu-item,
 			.ast-mobile-menu-drawer .main-header-menu .menu-item,
-			.site-navigation .main-header-menu .menu-item,
-			ul.main-header-menu > li {
+			#ast-mobile-site-navigation .menu-item,
+			#ast-hf-mobile-menu .menu-item,
+			ul.main-header-menu > li,
+			li.page_item {
 				width: 100% !important;
-				border-bottom: 1px solid rgba(197, 160, 89, 0.2) !important;
+				border-bottom: 1px solid rgba(197, 160, 89, 0.25) !important;
+				margin: 0 !important;
+				padding: 0 !important;
 			}
+
+			.ast-mobile-header-content .main-header-menu .menu-item > a,
 			.ast-mobile-popup-drawer .main-header-menu .menu-item > a,
 			.ast-mobile-menu-drawer .main-header-menu .menu-item > a,
-			.site-navigation .main-header-menu .menu-item > a,
-			ul.main-header-menu > li > a {
+			#ast-mobile-site-navigation .menu-item > a,
+			#ast-hf-mobile-menu .menu-item > a,
+			ul.main-header-menu > li > a,
+			li.page_item > a {
 				display: block !important;
-				padding: 14px 16px !important;
+				padding: 14px 20px !important;
 				font-size: 1rem !important;
 				font-weight: 600 !important;
 				color: #ffffff !important;
 				text-align: left !important;
-				border-left: 3px solid transparent !important;
-				transition: all 0.2s ease !important;
+				border-left: 4px solid transparent !important;
+				text-decoration: none !important;
+				transition: all 0.2s ease-in-out !important;
 			}
-			.ast-mobile-popup-drawer .main-header-menu .menu-item:hover > a,
+
+			.ast-mobile-header-content .main-header-menu .menu-item:hover > a,
+			.ast-mobile-header-content .main-header-menu .menu-item.current-menu-item > a,
 			.ast-mobile-popup-drawer .main-header-menu .menu-item.current-menu-item > a,
-			.site-navigation .main-header-menu .menu-item.current-menu-item > a,
-			ul.main-header-menu > li:hover > a {
+			#ast-mobile-site-navigation .menu-item.current-menu-item > a,
+			#ast-hf-mobile-menu .menu-item.current-menu-item > a,
+			ul.main-header-menu > li:hover > a,
+			ul.main-header-menu > li.current-menu-item > a {
 				color: #C5A059 !important;
 				border-left-color: #C5A059 !important;
-				background: rgba(197, 160, 89, 0.08) !important;
-				padding-left: 22px !important;
+				background: rgba(197, 160, 89, 0.12) !important;
+				padding-left: 26px !important;
 			}
+
 			.ast-mobile-menu-buttons .menu-toggle,
-			.main-header-menu-toggle {
+			.main-header-menu-toggle,
+			button.menu-toggle {
 				background: #002B49 !important;
-				border: 1px solid #C5A059 !important;
+				border: 1.5px solid #C5A059 !important;
 				color: #C5A059 !important;
 				border-radius: 6px !important;
 				padding: 6px 12px !important;
+			}
+
+			.ast-mobile-menu-buttons .menu-toggle svg,
+			.main-header-menu-toggle svg,
+			button.menu-toggle svg {
+				fill: #C5A059 !important;
+				color: #C5A059 !important;
 			}
 		}
 		.main-header-menu .sub-menu {
@@ -1934,3 +1974,66 @@ function aofa_core_deactivate(): void {
 }
 register_deactivation_hook( __FILE__, 'aofa_core_deactivate' );
 
+
+/**
+ * Force Primary Navigation Menu for both Desktop and Mobile locations in Astra.
+ */
+add_filter( 'wp_nav_menu_args', function( $args ) {
+	$locations = get_nav_menu_locations();
+	$primary_menu_id = $locations['primary'] ?? 21;
+
+	// Force Primary Menu for primary and mobile navigation
+	if ( empty( $args['theme_location'] ) || in_array( $args['theme_location'], array( 'primary', 'mobile_menu', 'header_menu' ), true ) ) {
+		$args['menu']        = $primary_menu_id;
+		$args['fallback_cb'] = false;
+	}
+	return $args;
+}, 999 );
+
+add_filter( 'theme_mod_nav_menu_locations', function( $locations ) {
+	if ( ! is_array( $locations ) ) {
+		$locations = array();
+	}
+	if ( empty( $locations['primary'] ) ) {
+		$locations['primary'] = 21;
+	}
+	$locations['mobile_menu'] = $locations['primary'];
+	$locations['header_menu'] = $locations['primary'];
+	return $locations;
+}, 999 );
+
+/**
+ * Ensure Primary Navigation Menu items are sorted strictly by menu_order.
+ */
+add_filter( 'wp_get_nav_menu_items', function( $items, $menu, $args ) {
+	if ( is_array( $items ) && count( $items ) > 1 ) {
+		usort( $items, function( $a, $b ) {
+			return (int) $a->menu_order - (int) $b->menu_order;
+		} );
+	}
+	return $items;
+}, 10, 3 );
+
+/**
+ * One-time database update for menu items order.
+ */
+add_action( 'init', function() {
+	if ( get_option( 'aofa_nav_order_fixed_v2' ) ) {
+		return;
+	}
+	global $wpdb;
+	$orders = array(
+		201 => 1,
+		202 => 2,
+		207 => 3,
+		208 => 4,
+		210 => 5,
+		211 => 6,
+		212 => 7,
+		213 => 8
+	);
+	foreach ( $orders as $id => $ord ) {
+		$wpdb->update( $wpdb->posts, array( 'menu_order' => $ord ), array( 'ID' => $id ) );
+	}
+	update_option( 'aofa_nav_order_fixed_v2', 1 );
+} );
