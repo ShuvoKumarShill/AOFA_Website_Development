@@ -77,30 +77,192 @@ add_action( 'init', 'aofa_core_init' );
 add_action( 'wp_head', function() {
 	?>
 	<style id="aofa-executive-styles">
-		/* ── Navigation Header Fixes ── */
-		/* ── Desktop Navigation Header ── */
+		/* ════════════════════════════════════════════════════
+		   AOFA — Professional Executive Header & Navigation
+		   Brand: Navy #002B49 | Gold #C5A059 | Deep #001222
+		   ════════════════════════════════════════════════════ */
+
+		/* ── 1. Header Bar: Dark Navy Background ── */
+		#masthead,
+		.ast-primary-header-bar,
+		.ast-header-break-point .ast-primary-header-bar,
+		.site-header {
+			background: linear-gradient(135deg, #001222 0%, #002B49 100%) !important;
+			background-color: #002B49 !important;
+			border-bottom: 3px solid #C5A059 !important;
+			box-shadow: 0 2px 20px rgba(0, 18, 34, 0.45) !important;
+			padding: 0 !important;
+			min-height: unset !important;
+		}
+
+		.ast-primary-header-bar .site-primary-header-wrap,
+		.ast-primary-header-bar .ast-container {
+			min-height: 70px !important;
+			padding-top: 0 !important;
+			padding-bottom: 0 !important;
+		}
+
+		/* ── 2. Site Identity (Logo / Title Area) ── */
+		.site-branding,
+		.ast-site-identity {
+			display: flex !important;
+			align-items: center !important;
+			padding: 10px 0 !important;
+		}
+
+		/* ── Site Title: readable 1-2 line display with gold accent bar ── */
+		.site-title,
+		.ast-site-identity .site-title {
+			margin: 0 !important;
+			padding: 0 !important;
+			line-height: 1 !important;
+		}
+
+		.site-title a,
+		.ast-site-identity .site-title a {
+			color: #ffffff !important;
+			text-decoration: none !important;
+			display: flex !important;
+			align-items: center !important;
+			gap: 12px !important;
+			white-space: normal !important;
+			max-width: 280px !important;
+			line-height: 1.35 !important;
+			font-family: 'Georgia', 'Times New Roman', serif !important;
+			font-size: 0.92rem !important;
+			font-weight: 700 !important;
+			letter-spacing: 0.01em !important;
+			transition: color 0.2s ease !important;
+		}
+
+		/* Gold vertical accent bar — taller for larger title */
+		.site-title a::before {
+			content: '';
+			display: block;
+			width: 3px;
+			height: 42px;
+			background: linear-gradient(180deg, #C5A059 0%, #E8C878 100%);
+			border-radius: 2px;
+			flex-shrink: 0;
+			min-width: 3px;
+		}
+
+		.site-title a:hover {
+			color: #C5A059 !important;
+		}
+
+		.site-description {
+			display: none !important;
+		}
+
+		/* ── 3. Desktop Navigation ── */
 		@media (min-width: 922px) {
-			.ast-primary-header-bar .site-navigation {
+			.ast-primary-header-bar .site-navigation,
+			.ast-primary-header-bar .main-navigation {
 				display: flex !important;
 				justify-content: flex-end !important;
+				align-items: center !important;
 			}
+
 			.main-header-menu {
 				display: flex !important;
 				flex-wrap: nowrap !important;
 				align-items: center !important;
-				gap: 0.85rem !important;
+				gap: 0 !important;
+				margin: 0 !important;
+				padding: 0 !important;
+				list-style: none !important;
 			}
+
+			/* Override Astra's gray text → white on dark header */
+			.ast-builder-menu-1 .menu-item > .menu-link,
+			.ast-builder-menu-1 .menu-item > a,
+			.main-header-menu .menu-item > .menu-link,
 			.main-header-menu .menu-item > a {
-				padding: 0 8px !important;
-				font-size: 0.92rem !important;
+				padding: 0 9px !important;
+				font-size: 0.8rem !important;
 				font-weight: 600 !important;
-				color: #002B49 !important;
+				color: rgba(255, 255, 255, 0.88) !important;
 				white-space: nowrap !important;
+				letter-spacing: 0.01em !important;
 				transition: color 0.25s ease !important;
+				text-decoration: none !important;
+				line-height: 70px !important;
+				display: block !important;
+				position: relative !important;
 			}
+
+			/* Gold underline hover effect */
+			.ast-builder-menu-1 .menu-item > .menu-link::after,
+			.ast-builder-menu-1 .menu-item > a::after,
+			.main-header-menu .menu-item > .menu-link::after,
+			.main-header-menu .menu-item > a::after {
+				content: '' !important;
+				position: absolute !important;
+				bottom: 0 !important;
+				left: 9px !important;
+				right: 9px !important;
+				height: 3px !important;
+				background: #C5A059 !important;
+				transform: scaleX(0) !important;
+				transition: transform 0.25s ease !important;
+				border-radius: 2px 2px 0 0 !important;
+			}
+
+			/* Hover / Active states → gold */
+			.ast-builder-menu-1 .menu-link:hover,
+			.ast-builder-menu-1 .main-header-menu > .menu-item:hover > .menu-link,
+			.ast-builder-menu-1 .main-header-menu > .menu-item:hover > a,
+			.ast-builder-menu-1 .menu-item.current-menu-item > .menu-link,
+			.ast-builder-menu-1 .menu-item.current-menu-item > a,
+			.ast-builder-menu-1 .current-menu-ancestor > .menu-link,
+			.ast-builder-menu-1 .current-menu-ancestor > a,
+			.main-header-menu .menu-item > .menu-link:hover,
 			.main-header-menu .menu-item > a:hover,
-			.main-header-menu .menu-item.current-menu-item > a {
+			.main-header-menu .menu-item.current-menu-item > .menu-link,
+			.main-header-menu .menu-item.current-menu-item > a,
+			.main-header-menu .current-menu-ancestor > .menu-link,
+			.main-header-menu .current-menu-ancestor > a {
 				color: #C5A059 !important;
+			}
+
+			.ast-builder-menu-1 .menu-item:hover > .menu-link::after,
+			.ast-builder-menu-1 .menu-item:hover > a::after,
+			.ast-builder-menu-1 .menu-item.current-menu-item > .menu-link::after,
+			.ast-builder-menu-1 .menu-item.current-menu-item > a::after,
+			.main-header-menu .menu-item:hover > .menu-link::after,
+			.main-header-menu .menu-item:hover > a::after,
+			.main-header-menu .menu-item.current-menu-item > .menu-link::after,
+			.main-header-menu .menu-item.current-menu-item > a::after {
+				transform: scaleX(1) !important;
+			}
+
+			/* Dropdown sub-menus */
+			.main-header-menu .sub-menu {
+				background: #002B49 !important;
+				border-top: 3px solid #C5A059 !important;
+				border-radius: 0 0 8px 8px !important;
+				box-shadow: 0 12px 30px rgba(0, 18, 34, 0.45) !important;
+				min-width: 220px !important;
+			}
+
+			.main-header-menu .sub-menu .menu-item > a,
+			.main-header-menu .sub-menu .menu-item > .menu-link {
+				color: rgba(255,255,255,0.85) !important;
+				padding: 12px 20px !important;
+				line-height: 1.4 !important;
+				text-transform: none !important;
+				letter-spacing: 0 !important;
+				font-size: 0.875rem !important;
+				font-weight: 500 !important;
+				border-bottom: 1px solid rgba(197,160,89,0.15) !important;
+			}
+
+			.main-header-menu .sub-menu .menu-item > a:hover,
+			.main-header-menu .sub-menu .menu-item > .menu-link:hover {
+				color: #C5A059 !important;
+				background: rgba(197,160,89,0.08) !important;
+				padding-left: 26px !important;
 			}
 		}
 
@@ -111,10 +273,13 @@ add_action( 'wp_head', function() {
 				z-index: 999999 !important;
 			}
 
+			/* ── Override Astra's white background on the mobile popup/drawer ── */
+			.ast-mobile-popup-drawer.active .ast-mobile-popup-inner,
+			.ast-mobile-header-wrap .ast-mobile-header-content,
 			.ast-mobile-header-content,
+			.ast-desktop-header-content,
 			.ast-mobile-popup-drawer,
 			.ast-mobile-header-drawer,
-			.ast-desktop-header-content,
 			.ast-mobile-menu-drawer,
 			#ast-mobile-header,
 			.main-navigation,
@@ -122,15 +287,22 @@ add_action( 'wp_head', function() {
 			#ast-mobile-site-navigation,
 			#ast-hf-mobile-menu {
 				background: #001222 !important;
+				background-color: #001222 !important;
 			}
 
-			.ast-mobile-header-content {
+			/* ── Gradient on the expanded mobile content area ── */
+			.ast-mobile-header-wrap .ast-mobile-header-content {
 				background: linear-gradient(180deg, #001222 0%, #002B49 100%) !important;
+				background-color: #001222 !important;
 				padding: 10px 0 !important;
 				border-top: 2px solid #C5A059 !important;
 				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
 			}
 
+			/* ── Override Astra Builder Mobile menu background (global-color-4 = #fff) ── */
+			.ast-builder-menu-mobile .main-navigation .main-header-menu,
+			.ast-builder-menu-mobile .main-navigation .main-header-menu .menu-link,
+			.ast-builder-menu-mobile .main-navigation .main-header-menu .sub-menu,
 			.ast-mobile-header-content .main-header-menu,
 			.ast-mobile-popup-drawer .main-header-menu,
 			.ast-mobile-menu-drawer .main-header-menu,
@@ -144,11 +316,14 @@ add_action( 'wp_head', function() {
 				margin: 0 !important;
 				gap: 0 !important;
 				list-style: none !important;
+				background: transparent !important;
+				background-color: transparent !important;
 			}
 
 			.ast-mobile-header-content .main-header-menu .menu-item,
 			.ast-mobile-popup-drawer .main-header-menu .menu-item,
 			.ast-mobile-menu-drawer .main-header-menu .menu-item,
+			.ast-builder-menu-mobile .main-navigation .main-header-menu .menu-item,
 			#ast-mobile-site-navigation .menu-item,
 			#ast-hf-mobile-menu .menu-item,
 			ul.main-header-menu > li,
@@ -159,6 +334,10 @@ add_action( 'wp_head', function() {
 				padding: 0 !important;
 			}
 
+			/* ── Override Astra's dark grey text color (global-color-3 = #334155) ── */
+			.ast-builder-menu-mobile .main-navigation .main-header-menu .menu-item > .menu-link,
+			.ast-builder-menu-mobile .main-navigation .main-header-menu .menu-item > a,
+			.ast-builder-menu-mobile .main-navigation .main-header-menu .menu-item > .ast-menu-toggle,
 			.ast-mobile-header-content .main-header-menu .menu-item > a,
 			.ast-mobile-popup-drawer .main-header-menu .menu-item > a,
 			.ast-mobile-menu-drawer .main-header-menu .menu-item > a,
@@ -175,8 +354,17 @@ add_action( 'wp_head', function() {
 				border-left: 4px solid transparent !important;
 				text-decoration: none !important;
 				transition: all 0.2s ease-in-out !important;
+				background: transparent !important;
+				background-color: transparent !important;
 			}
 
+			/* ── Override Astra hover: global-color-1 text + global-color-5 bg ── */
+			.ast-builder-menu-mobile .main-navigation .menu-link:hover,
+			.ast-builder-menu-mobile .main-navigation .main-header-menu > .menu-item:hover > .menu-link,
+			.ast-builder-menu-mobile .main-navigation .main-header-menu > .menu-item:hover > a,
+			.ast-builder-menu-mobile .main-navigation .menu-item.current-menu-item > .menu-link,
+			.ast-builder-menu-mobile .main-navigation .menu-item.current-menu-item > a,
+			.ast-builder-menu-mobile .main-navigation .menu-item.current-menu-ancestor > .menu-link,
 			.ast-mobile-header-content .main-header-menu .menu-item:hover > a,
 			.ast-mobile-header-content .main-header-menu .menu-item.current-menu-item > a,
 			.ast-mobile-popup-drawer .main-header-menu .menu-item.current-menu-item > a,
@@ -187,23 +375,34 @@ add_action( 'wp_head', function() {
 				color: #C5A059 !important;
 				border-left-color: #C5A059 !important;
 				background: rgba(197, 160, 89, 0.12) !important;
+				background-color: rgba(197, 160, 89, 0.12) !important;
 				padding-left: 26px !important;
 			}
 
+			/* ── Hamburger button: override Astra minimal/transparent style ── */
+			[data-section="section-header-mobile-trigger"] .ast-button-wrap .ast-mobile-menu-trigger-minimal,
 			.ast-mobile-menu-buttons .menu-toggle,
 			.main-header-menu-toggle,
 			button.menu-toggle {
 				background: #002B49 !important;
+				background-color: #002B49 !important;
 				border: 1.5px solid #C5A059 !important;
 				color: #C5A059 !important;
 				border-radius: 6px !important;
 				padding: 6px 12px !important;
 			}
 
+			/* ── Hamburger icon SVG color ── */
+			[data-section="section-header-mobile-trigger"] .ast-button-wrap .mobile-menu-toggle-icon .ast-mobile-svg,
 			.ast-mobile-menu-buttons .menu-toggle svg,
 			.main-header-menu-toggle svg,
 			button.menu-toggle svg {
 				fill: #C5A059 !important;
+				color: #C5A059 !important;
+			}
+
+			/* ── Mobile menu close button ── */
+			.ast-mobile-popup-drawer.active .menu-toggle-close {
 				color: #C5A059 !important;
 			}
 		}
