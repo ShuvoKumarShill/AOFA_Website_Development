@@ -64,3 +64,8 @@ ssh/
 *.tar.gz
 aofa_site_ready/
 
+# === Python ===
+__pycache__/
+*.py[cod]
+
+
